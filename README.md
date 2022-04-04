@@ -1,6 +1,6 @@
 # portfolio
 
-[R markdown website]( https://carmenhove.github.io/portfolio/)
+My [data science portfolio]( https://carmenhove.github.io/portfolio/).
 
 ### 
-![](images/fun.jpg)
+![](Hepatocytes.jpg)
