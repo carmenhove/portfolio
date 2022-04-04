@@ -8,4 +8,4 @@ navbar:
       href: Projects.html
     - text: "Contact" #Page 3
       href: Contact.html
-#output_dir: "docs"
+output_dir: "docs"
