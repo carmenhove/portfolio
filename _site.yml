@@ -1,0 +1,11 @@
+name: "Carmen Hové"
+navbar:
+  title: "Portfolio"
+  left:
+    - text: "About me" #Page 1
+      href: index.html
+    - text: "Projects" #Page 2
+      href: Projects.html
+    - text: "Contact" #Page 3
+      href: Contact.html
+#output_dir: "docs"

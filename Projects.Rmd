@@ -1,0 +1,26 @@
+---
+title: "Projects"
+output: html_document
+---
+<br>
+![](images/wow.jpg){width=50%}
+
+## Google Drive 
+<font size="4">[Google drive](https://drive.google.com/drive/folders/1VQb08giIrpIorq6gPSU0ClqyZaIxup_m?usp=sharing) for all shared files, organized by contributor. </font size="4">
+
+<br>
+
+## Quick Links to Recommended Books
+[Evolution in Four Dimensions](https://mitpress.mit.edu/books/evolution-four-dimensions) by Eva Jablonka and Marion Lamb
+
+[The Selfish Gene](https://global.oup.com/academic/product/the-selfish-gene-9780198788607?cc=us&lang=en&) by Richard Dawkins
+
+[The Extended Phenotype](https://global.oup.com/academic/product/the-extended-phenotype-9780198788911?q=extended%20phenotype&lang=en&cc=us) by Richard Dawkins
+
+[Why We Get Sick: The New Science of Darwinian Medicine](https://www.goodreads.com/book/show/81788.Why_We_Get_Sick) by Randy Nesse and George Williams
+
+[Plague Time](https://www.penguinrandomhouse.com/books/47554/plague-time-by-paul-ewald/) by Paul Ewald
+
+[Evolution of Infectious Disease](https://www.amazon.com/Evolution-Infectious-Disease-Paul-Ewald/dp/0195111397) by Paul Ewald
+
+
