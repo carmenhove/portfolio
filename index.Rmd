@@ -1,13 +1,20 @@
 ---
-title: "About me"
+title: "About Me"
 output: html_document
 ---
+<font size="5"> Hi, my name is Carmen. Thanks for being here! </font size="5">
 
-## Hi, my name is Carmen. Thanks for being here.
-### 
-![](Headshot.jpg){width=30%}
+![](Headshot.jpg){width=25%}
+<font size="4"> Click [here](https://docs.google.com/document/d/1jBOR4NdC35zANqKtsWo9iCZqtAC06o79/edit?usp=sharing&ouid=100924025254195710264&rtpof=true&sd=true) for Curriculum Vitaé </font size="4"><br/>
 
-### 
-![](Hepatocytes.jpg)
+<font size="4"> Contact Info </font size="4"><br/>
+<font size="3">
+Email: hove.cm@gmail.com <br/>
+LinkedIn: [linkedin.com/in/carmenhove/](https://www.linkedin.com/in/carmenhove/)
+</font size="3">
 
-<font size="2">Website last updated: `r Sys.Date()`.</font size="3">
+![](LiverCells.jpg){width=100%}
+<figcaption align = "center"> Hepatocyte (triptych oil on canvas) by my lovely partner, Alexa Carr </figcaption>
+
+<font size="2"> Website last updated: `r Sys.Date()`.
+

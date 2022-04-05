@@ -4,6 +4,10 @@ navbar:
   left:
     - text: "About me" #Page 1
       href: index.html
-    - text: "Projects" #Page 2
-      href: Projects.html
+    - text: "Project A" #Page 2
+      href: ProjectA.html
+    - text: "Project B" #Page 3
+      href: ProjectB.html
+    - text: "Publications" #Page 4
+      href: Publications.html
 output_dir: "docs"
