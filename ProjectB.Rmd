@@ -3,26 +3,18 @@ title: "Project B"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r , include=FALSE}
+load("Portfolio.RData")
+inst = lapply(pkgs, library, character.only = TRUE) 
 ```
 
-## R Markdown
+## Will Christmas in Seattle be drizzly or dry? 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Data wrangling
+For this project, I used daily weather data collected by [National Weather Service](https://w1.weather.gov/climate/xmacis.php?wfo=sew) in December for the Seattle metro area (2000-2021).
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+After uploading the data, I found some squirrely problems that needed fixing. 
 
-```{r cars}
-summary(cars)
-```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

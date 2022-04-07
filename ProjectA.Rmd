@@ -6,17 +6,113 @@ output: html_document
 load("Portfolio.RData")
 inst = lapply(pkgs, library, character.only = TRUE) 
 ```
+## Estradiol and testosterone production across the lifespan
 
-## What are the sex-specific effects of age on hormone production?
+![](hormone_pic.jpeg){width=30%}
 
-<font size="5"> Estrogen and testosterone are often described as female and male hormones, respectively, but both sexes produce each hormone (just at different concentrations).</font size="5">
+<font size="4">In this for-fun side project, I estimate the effects of age on estradiol and testosterone production in both males and females (and use this query as an excuse to showcase the similarities and differences between the [brms](https://cran.r-project.org/web/packages/brms/index.html) and [mgcv](https://cran.r-project.org/web/packages/mgcv/index.html) packages).
 
-![](hormone_pic.jpeg){width=50%}
+I came up with the idea for this project during the first summer I served as a mentor for the [UCSB research mentorship program](https://summer.ucsb.edu/programs/research-mentorship-program/overview). After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is *only* produced by females and testosterone is *only* found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4">
 
-<font size="4"> In this for-fun project, I utilize publicly available data collected by the [National Health and Nutrition Examination Survey (NHANES)](https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm#Component_Description) to model the sex-specific effects of age on estradiol and testosterone.</font size="4">
+## Data importing and cleaning
+<font size="4"> The complete **R code** for this project lives on [my GitHub repo](https://github.com/carmenhove/portfolio/blob/main/Hormones.R). </font size="4">
 
-Testosterone (LBXTST) and Estradiol (LBXEST) measured in both males and females ages 6 and up during 2014-2015 and 2015-2016 collection cycles. Testosterone as ng/dL, estradiol was pg/mL. Detection limit data also collected as a comment code, indicating whether or not detection limit threshold was met.
+I utilized publicly available data collected by the [National Health and Nutrition Examination Survey (NHANES)](https://www.cdc.gov/nchs/nhanes/about_nhanes.htm). By searching through variable names in the [NHANES codebook](https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx), I found that both testosterone and estradiol were measured in males and females ages 6 and up during [2013-2014](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm) and [2015-2016](https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm) collection cycles. I also imported corresponding [demographic](https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm), [BMI](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm) and [health data](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm) and merged by SEQN (participant identification number). 
 
-```{r tables-dataset}
-knitr::kable(dataset[1:5, ], caption = 'A caption')
+```{r}
+#I utilized the following packages for this project.
+pkgs
 ```
+
+```{r}
+#Structure of initial, merged dataframe
+str(PAdf1)
+```
+
+<font size="4"> Checking assumptions of normality </font size="4">
+
+By plotting histograms of the initial raw data, it's clear that there is a lot of variance in estradiol and testosterone values. 
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+ggplot(PAdf2, aes(x = Value, color = Sex, fill = Sex))+
+  geom_histogram(bins = 30, alpha = 0.8)+
+  facet_grid(~ Measure, scales = "free")+
+    scale_color_manual(values = colorset1)+
+  scale_fill_manual(values = colorset1)
+```
+
+Based on visual inspection of the plots above, it appears like there could be excess zero-values in this dataset. However, a quick check indicates that there are none.
+```{r}
+sum(PAdf2$Value==0,na.rm = T)
+```
+
+Since there are no zero-values in this data set, I can log transform raw estradiol and testosterone values. Based on the plot below, things are looking much better! But there are still super low values, which don't make very much biological sense. 
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+#Log-transformation
+ggplot(PAdf2, aes(x = log(Value), color = Sex, fill = Sex))+
+  geom_histogram(bins = 30, alpha = 0.8)+
+  facet_grid(~ Measure, scales = "free")+
+    scale_color_manual(values = colorset1)+
+  scale_fill_manual(values = colorset1)
+```
+
+A closer evaluation of the [NHANES data file](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm) shows that these non-zero lower-than-expected values are likely **imputed values** that were generated for individuals who had assay results below the limit of detection.
+
+![](Imputed values.png){width=65%}
+
+Since these imputed values reflect limits of assay sensitivity rather than biological reality, I remove these values from the data set and re-plot log-transformed estradiol and testosterone distributions. These look much better, but there are clearly still some "extreme" values (especially for estradiol). 
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+ggplot(PAdf3, aes(x = log(Value), color = Sex, fill = Sex))+
+  geom_histogram(bins = 30, alpha = 0.8)+
+  facet_grid( ~ Measure,scales = "free")+
+    scale_color_manual(values = colorset1)+
+  scale_fill_manual(values = colorset1)
+```
+
+Another consideration is how pregnancy status among females may impact hormone levels, since biological knowledge suggests that estradiol is likely to be much higher during pregnancy. A quick check indicates that there are 112 pregnant females in this sample.
+```{r}
+table(PAdf3$Pregnant.Sex)
+```
+
+The plot below gives an idea of how pregnancy status may be driving "extreme" values. 
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+ggplot(PAdf3, aes(x = Age, y = log(Value), color = Pregnant.Sex))+
+  geom_point(position = "jitter")+
+  facet_grid(~ Measure, scales = "free")+
+  scale_color_manual(values = colorset2)
+```
+
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+
+ggplot(brms.predvals, aes(x = Age, y = lnValue, 
+                          color =Sex, fill = Sex))+
+  #geom_point(data = PAdf3, aes(x = Age, y = log(Value),
+  #                             color = Sex),
+  #           position = "jitter", alpha = 0.3)+
+  geom_line(size = 0.7)+
+  geom_ribbon(aes(ymin = Q2.5, ymax =Q97.5, group = Sex),
+              alpha=0.6, linetype = 0) +
+  facet_grid(~Measure,scales = "free")+
+  scale_color_manual(values = cal_palette("superbloom3"))+
+    scale_fill_manual(values = cal_palette("superbloom3"))+
+  labs(title = "predicted values using brms",
+       y = "ln Testosterone (pg/mL)")
+```
+
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+
+ggplot(gam.predvalues, aes(x = Age, y = lnValue, 
+                           color = Sex, fill = Sex)) + 
+  geom_line(size = 0.7)+
+  #geom_point(data = PAdf3, aes(x = Age, y = log(Value),
+  #                             color = Sex), 
+  #           position = "jitter", alpha = 0.3)+
+  geom_ribbon(aes(ymin = lnValue - se.fit, 
+                  ymax = lnValue + se.fit, 
+                  group = Sex),
+              alpha=0.6, linetype = 0,,show.legend = FALSE) +
+  facet_grid(~ Measure,scales = "free")+
+  scale_color_manual(values = cal_palette("superbloom3"))+
+    scale_fill_manual(values = cal_palette("superbloom3"))+
+  labs(title = "predicted values using gam")
+```
+

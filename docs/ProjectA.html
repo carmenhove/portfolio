@@ -274,80 +274,51 @@ $(document).ready(function () {
 </div>
 
 
-<div id="what-are-the-sex-specific-effects-of-age-on-hormone-production" class="section level2">
-<h2>What are the sex-specific effects of age on hormone production?</h2>
-<p><font size="5"> Estrogen and testosterone are often described as female and male hormones, respectively, but both sexes produce each hormone (just at different concentrations).</font size="5"></p>
-<p><img src="hormone_pic.jpeg" style="width:50.0%" /></p>
-<p><font size="4"> In this for-fun project, I utilize publicly available data collected by the <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm#Component_Description">National Health and Nutrition Examination Survey (NHANES)</a> to model the sex-specific effects of age on estradiol and testosterone.</font size="4"></p>
-<p>Testosterone (LBXTST) and Estradiol (LBXEST) measured in both males and females ages 6 and up during 2014-2015 and 2015-2016 collection cycles. Testosterone as ng/dL, estradiol was pg/mL. Detection limit data also collected as a comment code, indicating whether or not detection limit threshold was met.</p>
-<pre class="r"><code>knitr::kable(dataset[1:5, ], caption = &#39;A caption&#39;)</code></pre>
-<table>
-<caption>A caption</caption>
-<thead>
-<tr class="header">
-<th align="right">Testosterone</th>
-<th align="right">Test.cc</th>
-<th align="right">Estradiol</th>
-<th align="right">Est.cc</th>
-<th align="right">SHBG</th>
-<th align="left">Pregnant</th>
-<th align="left">Sex</th>
-<th align="right">Age</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">355.03</td>
-<td align="right">0</td>
-<td align="right">14.8</td>
-<td align="right">0</td>
-<td align="right">62.45</td>
-<td align="left">No</td>
-<td align="left">1</td>
-<td align="right">69</td>
-</tr>
-<tr class="even">
-<td align="right">175.45</td>
-<td align="right">0</td>
-<td align="right">14.0</td>
-<td align="right">0</td>
-<td align="right">29.16</td>
-<td align="left">No</td>
-<td align="left">1</td>
-<td align="right">54</td>
-</tr>
-<tr class="odd">
-<td align="right">447.00</td>
-<td align="right">0</td>
-<td align="right">26.5</td>
-<td align="right">0</td>
-<td align="right">54.60</td>
-<td align="left">No</td>
-<td align="left">1</td>
-<td align="right">72</td>
-</tr>
-<tr class="even">
-<td align="right">206.57</td>
-<td align="right">0</td>
-<td align="right">22.3</td>
-<td align="right">0</td>
-<td align="right">28.49</td>
-<td align="left">No</td>
-<td align="left">1</td>
-<td align="right">56</td>
-</tr>
-<tr class="odd">
-<td align="right">28.10</td>
-<td align="right">0</td>
-<td align="right">10.3</td>
-<td align="right">0</td>
-<td align="right">55.52</td>
-<td align="left">No</td>
-<td align="left">2</td>
-<td align="right">61</td>
-</tr>
-</tbody>
-</table>
+<div id="estradiol-and-testosterone-production-across-the-lifespan" class="section level2">
+<h2>Estradiol and testosterone production across the lifespan</h2>
+<p><img src="hormone_pic.jpeg" style="width:30.0%" /></p>
+<p><font size="4">In this for-fun side project, I estimate the effects of age on estradiol and testosterone production in both males and females (and use this query as an excuse to showcase the similarities and differences between the <a href="https://cran.r-project.org/web/packages/brms/index.html">brms</a> and <a href="https://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a> packages).</p>
+<p>I came up with the idea for this project during the first summer I served as a mentor for the <a href="https://summer.ucsb.edu/programs/research-mentorship-program/overview">UCSB research mentorship program</a>. After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is <em>only</em> produced by females and testosterone is <em>only</em> found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4"></p>
+</div>
+<div id="data-importing-and-cleaning" class="section level2">
+<h2>Data importing and cleaning</h2>
+<p><font size="4"> The complete <strong>R code</strong> for this project lives on <a href="https://github.com/carmenhove/portfolio/blob/main/ProjectA.Rmd">my GitHub repo</a>. </font size="4"></p>
+<p>I utilized publicly available data collected by the <a href="https://www.cdc.gov/nchs/nhanes/about_nhanes.htm">National Health and Nutrition Examination Survey (NHANES)</a>. By searching through variable names in the <a href="https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx">NHANES codebook</a>, I found that both testosterone and estradiol were measured in males and females ages 6 and up during <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">2013-2014</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm">2015-2016</a> collection cycles. I also imported corresponding <a href="https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm">demographic</a>, <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm">BMI</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm">health data</a> and merged by SEQN (participant identification number).</p>
+<pre class="r"><code>#I utilized the following packages for this project.
+pkgs</code></pre>
+<pre><code>##  [1] &quot;nhanesA&quot;     &quot;tidyverse&quot;   &quot;magrittr&quot;    &quot;knitr&quot;       &quot;patchwork&quot;  
+##  [6] &quot;ggpubr&quot;      &quot;scales&quot;      &quot;brms&quot;        &quot;mgcv&quot;        &quot;sjlabelled&quot; 
+## [11] &quot;schoenberg&quot;  &quot;tidymv&quot;      &quot;broom&quot;       &quot;broom.mixed&quot; &quot;tidybayes&quot;  
+## [16] &quot;calecopal&quot;</code></pre>
+<pre class="r"><code>#Structure of initial, merged dataframe
+str(PAdf1)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    13144 obs. of  9 variables:
+##  $ Testosterone: num  355.03 175.45 447 2.51 206.57 ...
+##  $ Test.cc     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Estradiol   : num  14.8 14 26.5 2.12 22.3 ...
+##  $ Est.cc      : int  0 0 0 1 0 0 1 0 0 0 ...
+##  $ Pregnant    : chr  &quot;No&quot; &quot;No&quot; &quot;No&quot; &quot;No&quot; ...
+##  $ Pregnant.Sex: Ord.factor w/ 3 levels &quot;Male&quot;&lt;&quot;NP Female&quot;&lt;..: 1 1 1 1 1 NA NA 1 NA 1 ...
+##  $ Age         : int  69 54 72 9 56 61 56 65 26 76 ...
+##  $ Sex         : Ord.factor w/ 2 levels &quot;Male&quot;&lt;&quot;Female&quot;: 1 1 1 1 1 2 2 1 2 1 ...
+##  $ BMI         : num  26.7 28.6 28.9 17.1 41.7 35.7 26.5 22 20.3 34.4 ...</code></pre>
+<p><font size="4"> Checking assumptions of normality </font size="4"></p>
+<p>By plotting histograms of the initial raw data, it’s clear that there is a lot of variance in estradiol and testosterone values. <img src="ProjectA_files/figure-html/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Based on visual inspection of the plots above, it appears like there could be excess zero-values in this dataset. However, a quick check indicates that there are none.</p>
+<pre class="r"><code>sum(PAdf2$Value==0,na.rm = T)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>Since there are no zero-values in this data set, I can log transform raw estradiol and testosterone values. Based on the plot below, things are looking much better! But there are still super low values, which don’t make very much biological sense. <img src="ProjectA_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p>A closer evaluation of the <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">NHANES data file</a> shows that these non-zero lower-than-expected values are likely <strong>imputed values</strong> that were generated for individuals who had assay results below the limit of detection.</p>
+<p><img src="Imputed%20values.png" style="width:65.0%" /></p>
+<p>Since these imputed values reflect limits of assay sensitivity rather than biological reality, I remove these values from the data set and re-plot log-transformed estradiol and testosterone distributions. These look much better, but there are clearly still some “extreme” values (especially for estradiol). <img src="ProjectA_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Another consideration is how pregnancy status among females may impact hormone levels, since biological knowledge suggests that estradiol is likely to be much higher during pregnancy. A quick check indicates that there are 112 pregnant females in this sample.</p>
+<pre class="r"><code>table(PAdf3$Pregnant.Sex)</code></pre>
+<pre><code>## 
+##      Male NP female  P female 
+##     12188      9558       112</code></pre>
+<p>The plot below gives an idea of how pregnancy status may be driving “extreme” values. <img src="ProjectA_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p><img src="ProjectA_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p><img src="ProjectA_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
 </div>
 
 
