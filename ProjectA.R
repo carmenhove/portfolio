@@ -216,3 +216,10 @@ ggplot(gam.predvalues, aes(x = Age, y = lnValue,
   labs(title = "predicted values using gam")+
   theme(legend.position = "bottom")
 
+
+#Point estimates
+#Testosterone predicts Estradiol?
+
+#Linear prediction (compare models, compare brms and glm)
+#Testosterone ~ Estradiol + (1|SEQN) + Age + BMI
+
