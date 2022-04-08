@@ -274,13 +274,285 @@ $(document).ready(function () {
 </div>
 
 
-<div id="will-christmas-in-seattle-be-drizzly-or-dry" class="section level2">
-<h2>Will Christmas in Seattle be drizzly or dry?</h2>
+<div id="will-there-be-precipitation-in-seattle" class="section level2">
+<h2>Will there be precipitation in Seattle?</h2>
+<p><font size="5"> A simple machine learning project using logistic regression, <em>k</em>-Nearest neighbors, and Naive Bayes to predict precipitation </font size="5"></p>
+<p><img src="SeattleSkyline.jpeg" style="width:75.0%" /></p>
 </div>
-<div id="data-wrangling" class="section level2">
-<h2>Data wrangling</h2>
-<p>For this project, I used daily weather data collected by <a href="https://w1.weather.gov/climate/xmacis.php?wfo=sew">National Weather Service</a> in December for the Seattle metro area (2000-2021).</p>
-<p>After uploading the data, I found some squirrely problems that needed fixing.</p>
+<div id="data-importing-and-cleaning" class="section level2">
+<h2>Data importing and cleaning</h2>
+<p><font size="4"> The complete <strong>R code</strong> for this project lives on <a href="https://github.com/carmenhove/portfolio/blob/main/ProjectB.R">my GitHub repo</a>. </font size="4"></p>
+<p><font size="3"> For this project, I used weather data collected by <a href="https://w1.weather.gov/climate/xmacis.php?wfo=sew">National Weather Service</a> for every December day in Seattle from 1990 to 2021. These data included date, max/min/average temperature, average temperature departure from “normal” (departure), heating degree day (HDD), cooling degree days (CDD), inches precipitation, presence/absence of new snow (new snow), and inches snow depth.</p>
+<pre class="r"><code>str(PBdf1)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    989 obs. of  10 variables:
+##  $ Date         : chr  &quot;12/1/21&quot; &quot;12/2/21&quot; &quot;12/3/21&quot; &quot;12/4/21&quot; ...
+##  $ Max.Temp     : chr  &quot;58&quot; &quot;51&quot; &quot;46&quot; &quot;43&quot; ...
+##  $ Min.Temp     : chr  &quot;50&quot; &quot;39&quot; &quot;32&quot; &quot;37&quot; ...
+##  $ Ave.Temp     : chr  &quot;54&quot; &quot;45&quot; &quot;39&quot; &quot;40&quot; ...
+##  $ Departure    : chr  &quot;13.8&quot; &quot;5&quot; &quot;-0.9&quot; &quot;0.3&quot; ...
+##  $ HDD          : chr  &quot;11&quot; &quot;20&quot; &quot;26&quot; &quot;25&quot; ...
+##  $ CDD          : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
+##  $ Precipitation: chr  &quot;0&quot; &quot;0.04&quot; &quot;0&quot; &quot;0.64&quot; ...
+##  $ New.Snow     : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
+##  $ Snow.Depth   : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...</code></pre>
+<p>After uploading the data, I immediately ran into some problems. For one, most variables had leading and/or trailing white spaces that I couldn’t remove using a simple gsub() function. Closer examination showed that this was because most of the variables were in utf8 format, so I created a simple function to fix these erroneously formatted values.</p>
+<pre class="r"><code>utf8::utf8_print(unique(PBdf1$Ave.Temp), utf8 = FALSE)</code></pre>
+<pre><code>##   [1] &quot;54&quot;         &quot;45&quot;         &quot;39&quot;         &quot;40&quot;         &quot;38&quot;        
+##   [6] &quot;41&quot;         &quot;47&quot;         &quot;41.5&quot;       &quot;38.5&quot;       &quot;39.5&quot;      
+##  [11] &quot;42.5&quot;       &quot;36&quot;         &quot;37&quot;         &quot;35.5&quot;       &quot;40.5&quot;      
+##  [16] &quot;43&quot;         &quot;35&quot;         &quot;29.5&quot;       &quot;22.5&quot;       &quot;28.5&quot;      
+##  [21] &quot;25.5&quot;       &quot;34&quot;         &quot;22&quot;         &quot;37.0\u00a0&quot; &quot;38.5\u00a0&quot;
+##  [26] &quot;35.5\u00a0&quot; &quot;39.5\u00a0&quot; &quot;40.5\u00a0&quot; &quot;44.5\u00a0&quot; &quot;48.0\u00a0&quot;
+##  [31] &quot;50.0\u00a0&quot; &quot;42.5\u00a0&quot; &quot;36.5\u00a0&quot; &quot;40.0\u00a0&quot; &quot;44.0\u00a0&quot;
+##  [36] &quot;45.0\u00a0&quot; &quot;46.5\u00a0&quot; &quot;47.0\u00a0&quot; &quot;46.0\u00a0&quot; &quot;45.5\u00a0&quot;
+##  [41] &quot;49.5\u00a0&quot; &quot;33.0\u00a0&quot; &quot;32.5\u00a0&quot; &quot;37.5\u00a0&quot; &quot;36.0\u00a0&quot;
+##  [46] &quot;47.5\u00a0&quot; &quot;43.5\u00a0&quot; &quot;42.0\u00a0&quot; &quot;41.5\u00a0&quot; &quot;38.0\u00a0&quot;
+##  [51] &quot;39.0\u00a0&quot; &quot;51.5\u00a0&quot; &quot;35.0\u00a0&quot; &quot;33.5\u00a0&quot; &quot;30.5\u00a0&quot;
+##  [56] &quot;27.0\u00a0&quot; &quot;41.0\u00a0&quot; &quot;34.0\u00a0&quot; &quot;32.0\u00a0&quot; &quot;34.5\u00a0&quot;
+##  [61] &quot;31.0\u00a0&quot; &quot;31.5\u00a0&quot; &quot;29.0\u00a0&quot; &quot;30.0\u00a0&quot; &quot;49.0\u00a0&quot;
+##  [66] &quot;43.0\u00a0&quot; &quot;26.5\u00a0&quot; &quot;24.5\u00a0&quot; &quot;50.5\u00a0&quot; &quot;55.0\u00a0&quot;
+##  [71] &quot;27.5\u00a0&quot; &quot;48.5\u00a0&quot; &quot;53.0\u00a0&quot; &quot;55.5\u00a0&quot; &quot;51.0\u00a0&quot;
+##  [76] &quot;29.5\u00a0&quot; &quot;28.5\u00a0&quot; &quot;22.5\u00a0&quot; &quot;21.5\u00a0&quot; &quot;20.5\u00a0&quot;
+##  [81] &quot;23.0\u00a0&quot; &quot;28.0\u00a0&quot; &quot;54.0\u00a0&quot; &quot;25.0\u00a0&quot; &quot;21.0\u00a0&quot;
+##  [86] &quot;18.5\u00a0&quot; &quot;19.0\u00a0&quot; &quot;19.5\u00a0&quot; &quot;25.5\u00a0&quot; &quot;26.0\u00a0&quot;
+##  [91] &quot;22.0\u00a0&quot; &quot;17.0\u00a0&quot; &quot;53.5\u00a0&quot; &quot;56.0\u00a0&quot; &quot;52.5\u00a0&quot;
+##  [96] &quot;17.5\u00a0&quot; &quot;16.0\u00a0&quot; &quot;12.0\u00a0&quot; &quot;14.5\u00a0&quot; &quot;M\u00a0&quot;   
+## [101] &quot;20.0\u00a0&quot; &quot;12.5\u00a0&quot; &quot;11.0\u00a0&quot; &quot;16.5\u00a0&quot; &quot;14.0\u00a0&quot;</code></pre>
+<pre class="r"><code>#Create a function to replace all utf8 values
+replace.values &lt;- function(x) x &lt;- iconv(x, &quot;latin1&quot;, &quot;ASCII&quot;, sub=&quot;&quot;)</code></pre>
+<p>Code below shows data cleaning done to create the cleaned initial dataframe.</p>
+<pre class="r"><code>PBdf2 &lt;- PBdf1 %&gt;% 
+  #Remove &quot;T&quot; and &quot;M&quot; values for precipitation, as there is no public documentation to indicate what these values mean (and there are only a few instances in the dataset)
+  filter(!grepl(&quot;T&quot;,Precipitation, fixed = T),
+         !grepl(&quot;M&quot;,Precipitation, fixed = T)) %&gt;% 
+  #Replace all utf8 values
+  mutate_all(replace.values) %&gt;% 
+  #Fix dates, which were coded differently for 2021 versus all previous years
+  mutate(Date = case_when(grepl(&quot;/&quot;,Date,fixed = T) ~ 
+                            as.Date(Date, format= &quot;%m/%d/%y&quot;),
+                          grepl(&quot;-&quot;,Date,fixed = T) ~ 
+                            as.Date(Date, format= &quot;%Y-%m-%d&quot;))) %&gt;% 
+  #Separate out Date into month, day, and year
+  mutate(Year = lubridate::year(Date), 
+         Month = lubridate::month(Date), 
+         Day = lubridate::day(Date)) %&gt;% 
+  #Make sure relevant variables are in numeric format
+  mutate(across(c(Max.Temp:Precipitation,Day,Month,Departure,Year), as.numeric)) %&gt;%
+  #Create binary presence/absence variables for precipitation
+  mutate(Freezing = case_when(Min.Temp &gt; 33 ~ 0,
+                              Min.Temp &lt;= 33 ~ 1),
+         PrecipB = case_when(Precipitation &gt; 0 ~ 1,
+                             Precipitation ==0 ~ 0)) %&gt;% 
+  #Select out CDD, which only has a value of zero (makes sense, given likelihood of having to cool your house during December in Seattle)
+  select(PrecipB,Freezing,ends_with(&quot;Temp&quot;),HDD,Departure, Day,Year)</code></pre>
+<p>The structure of the</p>
+<pre class="r"><code>str(PBdf2)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    923 obs. of  9 variables:
+##  $ PrecipB  : num  0 1 0 1 1 1 1 1 1 1 ...
+##  $ Freezing : num  0 0 1 0 1 0 0 0 0 0 ...
+##  $ Max.Temp : num  58 51 46 43 43 46 50 48 43 44 ...
+##  $ Min.Temp : num  50 39 32 37 33 36 44 35 34 35 ...
+##  $ Ave.Temp : num  54 45 39 40 38 41 47 41.5 38.5 39.5 ...
+##  $ HDD      : num  11 20 26 25 27 24 18 23 26 25 ...
+##  $ Departure: num  13.8 5 -0.9 0.3 -1.6 1.6 7.7 2.3 -0.6 0.5 ...
+##  $ Day      : num  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Year     : num  2021 2021 2021 2021 2021 ...</code></pre>
+</div>
+<div id="splitting-data-into-train-test-subsets" class="section level2">
+<h2>Splitting data into train &amp; test subsets</h2>
+<p>Partition data into training and test datasets using a 75% to 25% split ratio.</p>
+<pre class="r"><code>set.seed(1234)
+sample_set &lt;- sample(nrow(PBdf2),round(nrow(PBdf2)*0.75), replace = F)
+training &lt;- PBdf2[sample_set,]
+testing &lt;- PBdf2[-sample_set,]</code></pre>
+</div>
+<div id="adressing-class-imbalance-using-synthetic-minority-oversampling-technique-smote" class="section level2">
+<h2>Adressing class imbalance using Synthetic Minority Oversampling Technique (SMOTE)</h2>
+<p>The code below shows that there is a class imbalance between precipitation and no precipitation.</p>
+<pre class="r"><code>round(prop.table(table(select(PBdf2, PrecipB),exclude = NULL)),4)*100</code></pre>
+<pre><code>## 
+##     0     1 
+## 29.58 70.42</code></pre>
+<pre class="r"><code>round(prop.table(table(select(training, PrecipB),exclude = NULL)),4)*100</code></pre>
+<pre><code>## 
+##    0    1 
+## 30.2 69.8</code></pre>
+<pre class="r"><code>round(prop.table(table(select(testing, PrecipB),exclude = NULL)),4)*100</code></pre>
+<pre><code>## 
+##     0     1 
+## 27.71 72.29</code></pre>
+<p>I deal with this imbalance using SMOTE</p>
+<pre class="r"><code>smote &lt;- SMOTE(training, training$PrecipB)
+training.adj &lt;- smote$data %&gt;% select(-class)
+round(prop.table(table(select(training.adj, PrecipB),exclude = NULL)),4)*100</code></pre>
+<pre><code>## 
+##     0     1 
+## 46.39 53.61</code></pre>
+</div>
+<div id="multicollinearity" class="section level2">
+<h2>Multicollinearity</h2>
+<p>Visualizing Multicollinearity <img src="ProjectB_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>Logistic regression</h2>
+<p>Clearly, the different temperature variables are colinear with each other (glm automatically generates NAs for coefficients)</p>
+<pre class="r"><code>train.mod &lt;- glm(data = training.adj, family = binomial, 
+                 formula = PrecipB ~ .)
+summary(train.mod)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = PrecipB ~ ., family = binomial, data = training.adj)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4826  -0.7853   0.3312   0.7742   2.9383  
+## 
+## Coefficients: (1 not defined because of singularities)
+##              Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) 14.596275  31.348758   0.466    0.641
+## Freezing    -0.194167   0.274538  -0.707    0.479
+## Max.Temp    -0.069211   0.230410  -0.300    0.764
+## Min.Temp     0.209760   0.228236   0.919    0.358
+## Ave.Temp           NA         NA      NA       NA
+## HDD          0.150775   0.345021   0.437    0.662
+## Departure    0.180072   0.294900   0.611    0.541
+## Day          0.018287   0.018275   1.001    0.317
+## Year        -0.010983   0.009411  -1.167    0.243
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1244.36  on 900  degrees of freedom
+## Residual deviance:  896.47  on 893  degrees of freedom
+## AIC: 912.47
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<pre class="r"><code>exp(coef(train.mod))</code></pre>
+<pre><code>##  (Intercept)     Freezing     Max.Temp     Min.Temp     Ave.Temp          HDD 
+## 2.183141e+06 8.235200e-01 9.331295e-01 1.233382e+00           NA 1.162735e+00 
+##    Departure          Day         Year 
+## 1.197304e+00 1.018455e+00 9.890768e-01</code></pre>
+<pre class="r"><code>training.adj2 &lt;- training.adj %&gt;% select(-Ave.Temp)
+train.mod2 &lt;- glm(data = training.adj2, family = binomial, 
+                  formula = PrecipB ~ .)
+preds.1 &lt;- predict(train.mod2, testing, type = &#39;response&#39;)
+#Clearly indicates Max.Temp, Min.Temp,and HDD are colinear
+vif(train.mod2)</code></pre>
+<pre><code>##   Freezing   Max.Temp   Min.Temp        HDD  Departure        Day       Year 
+##   2.447423 191.251962 230.190839 377.199096 270.172975   3.853988   1.010109</code></pre>
+<pre class="r"><code>training.adj3 &lt;- training.adj2 %&gt;% select(-Max.Temp,-Min.Temp)
+train.mod3 &lt;- glm(data = training.adj3, family = binomial, 
+                  formula = PrecipB ~ Day + Year + HDD)
+summary(train.mod3)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = PrecipB ~ Day + Year + HDD, family = binomial, 
+##     data = training.adj3)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4278  -0.9292   0.3694   0.8989   2.9837  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) 29.187486  17.712180   1.648   0.0994 .  
+## Day          0.039719   0.008964   4.431 9.38e-06 ***
+## Year        -0.011827   0.008815  -1.342   0.1797    
+## HDD         -0.221031   0.017507 -12.625  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1244.36  on 900  degrees of freedom
+## Residual deviance:  978.44  on 897  degrees of freedom
+## AIC: 986.44
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<pre class="r"><code>vif(train.mod3)</code></pre>
+<pre><code>##      Day     Year      HDD 
+## 1.037443 1.004359 1.041557</code></pre>
+<pre class="r"><code>preds.2 &lt;- predict(train.mod3, testing, type = &#39;response&#39;)
+
+ideal.cutoff &lt;- optimalCutoff(
+  actuals = testing$PrecipB,
+  predictedScores = preds.2,
+  optimiseFor = &quot;Both&quot;
+)
+
+preds.3 &lt;- ifelse(preds.2 &gt;= ideal.cutoff,1,0)
+
+preds.table &lt;- table(testing$PrecipB, preds.3)
+sum(diag(preds.table))/nrow(testing)</code></pre>
+<pre><code>## [1] 0.7619048</code></pre>
+</div>
+<div id="naive-bayes" class="section level2">
+<h2>Naive Bayes</h2>
+<pre class="r"><code>bayes.mod1 &lt;- naiveBayes(PrecipB ~ Day + Year + HDD,
+                         data = training.adj3, laplace = 1)
+bayes.mod1</code></pre>
+<pre><code>## 
+## Naive Bayes Classifier for Discrete Predictors
+## 
+## Call:
+## naiveBayes.default(x = X, y = Y, laplace = laplace)
+## 
+## A-priori probabilities:
+## Y
+##        0        1 
+## 0.463929 0.536071 
+## 
+## Conditional probabilities:
+##    Day
+## Y       [,1]     [,2]
+##   0 14.60024 8.935627
+##   1 16.49896 8.650276
+## 
+##    Year
+## Y       [,1]     [,2]
+##   0 2005.524 8.149689
+##   1 2005.236 9.515558
+## 
+##    HDD
+## Y       [,1]     [,2]
+##   0 30.18724 5.904600
+##   1 23.93789 5.625988</code></pre>
+<pre class="r"><code>bayes.pred1 &lt;- predict(bayes.mod1, testing, type = &quot;class&quot;)
+bayes.pred1.table &lt;- table(testing$PrecipB, bayes.pred1)
+bayes.pred1.table</code></pre>
+<pre><code>##    bayes.pred1
+##       0   1
+##   0  43  21
+##   1  29 138</code></pre>
+<pre class="r"><code>sum(diag(bayes.pred1.table))/nrow(testing)</code></pre>
+<pre><code>## [1] 0.7835498</code></pre>
+</div>
+<div id="k-nearest-neighbors" class="section level2">
+<h2><em>k</em>-Nearest Neighbors</h2>
+<pre class="r"><code>testing.knn &lt;- testing %&gt;% select(-Max.Temp,-Min.Temp,-Ave.Temp)
+
+train_labels &lt;- as.factor(pull(training.adj3, PrecipB))
+test_labels &lt;- as.factor(pull(testing.knn, PrecipB))
+
+k.spec &lt;- sqrt(nrow(testing.knn))
+
+knn.preds1 &lt;- knn(train = training.adj3,
+                  test = testing.knn,
+                  cl = train_labels,
+                  k=k.spec
+)
+
+head(knn.preds1)</code></pre>
+<pre><code>## [1] 0 1 1 1 1 1
+## Levels: 0 1</code></pre>
+<pre class="r"><code>knn.predtbl &lt;- table(test_labels, knn.preds1)
+knn.predtbl</code></pre>
+<pre><code>##            knn.preds1
+## test_labels   0   1
+##           0  52  12
+##           1  45 122</code></pre>
+<pre class="r"><code>sum(diag(knn.predtbl))/nrow(testing.knn)</code></pre>
+<pre><code>## [1] 0.7532468</code></pre>
+<p></font size="3"></p>
 </div>
 
 

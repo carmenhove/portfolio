@@ -8,13 +8,171 @@ load("Portfolio.RData")
 inst = lapply(pkgs, library, character.only = TRUE) 
 ```
 
-## Will Christmas in Seattle be drizzly or dry? 
+## Will there be precipitation in Seattle? 
 
-## Data wrangling
-For this project, I used daily weather data collected by [National Weather Service](https://w1.weather.gov/climate/xmacis.php?wfo=sew) in December for the Seattle metro area (2000-2021).
+<font size="5"> A simple machine learning project using logistic regression, *k*-Nearest neighbors, and Naive Bayes to predict precipitation </font size="5">
 
-After uploading the data, I found some squirrely problems that needed fixing. 
+![](SeattleSkyline.jpeg){width=75%}
 
+## Data importing and cleaning
+<font size="4"> The complete **R code** for this project lives on [my GitHub repo](https://github.com/carmenhove/portfolio/blob/main/ProjectB.R). </font size="4">
+
+<font size="3"> For this project, I used weather data collected by [National Weather Service](https://w1.weather.gov/climate/xmacis.php?wfo=sew) for every December day in Seattle from 1990 to 2021. These data included date, max/min/average temperature, average temperature departure from "normal" (departure), heating degree day (HDD), cooling degree days (CDD), inches precipitation, presence/absence of new snow (new snow), and inches snow depth. 
+
+```{r}
+str(PBdf1)
+```
+
+After uploading the data, I immediately ran into some problems. For one, most variables had leading and/or trailing white spaces that I couldn't remove using a simple gsub() function. Closer examination showed that this was because most of the variables were in utf8 format, so I created a simple function to fix these erroneously formatted values.
+
+```{r}
+utf8::utf8_print(unique(PBdf1$Ave.Temp), utf8 = FALSE)
+#Create a function to replace all utf8 values
+replace.values <- function(x) x <- iconv(x, "latin1", "ASCII", sub="")
+```
+
+Code below shows data cleaning done to create the cleaned initial dataframe. 
+```{r}
+PBdf2 <- PBdf1 %>% 
+  #Remove "T" and "M" values for precipitation, as there is no public documentation to indicate what these values mean (and there are only a few instances in the dataset)
+  filter(!grepl("T",Precipitation, fixed = T),
+         !grepl("M",Precipitation, fixed = T)) %>% 
+  #Replace all utf8 values
+  mutate_all(replace.values) %>% 
+  #Fix dates, which were coded differently for 2021 versus all previous years
+  mutate(Date = case_when(grepl("/",Date,fixed = T) ~ 
+                            as.Date(Date, format= "%m/%d/%y"),
+                          grepl("-",Date,fixed = T) ~ 
+                            as.Date(Date, format= "%Y-%m-%d"))) %>% 
+  #Separate out Date into month, day, and year
+  mutate(Year = lubridate::year(Date), 
+         Month = lubridate::month(Date), 
+         Day = lubridate::day(Date)) %>% 
+  #Make sure relevant variables are in numeric format
+  mutate(across(c(Max.Temp:Precipitation,Day,Month,Departure,Year), as.numeric)) %>%
+  #Create binary presence/absence variables for precipitation
+  mutate(Freezing = case_when(Min.Temp > 33 ~ 0,
+                              Min.Temp <= 33 ~ 1),
+         PrecipB = case_when(Precipitation > 0 ~ 1,
+                             Precipitation ==0 ~ 0)) %>% 
+  #Select out CDD, which only has a value of zero (makes sense, given likelihood of having to cool your house during December in Seattle)
+  select(PrecipB,Freezing,ends_with("Temp"),HDD,Departure, Day,Year)
+```
+
+The structure of the 
+```{r}
+str(PBdf2)
+```
+
+## Splitting data into train & test subsets
+
+Partition data into training and test datasets using a 75% to 25% split ratio. 
+```{r}
+set.seed(1234)
+sample_set <- sample(nrow(PBdf2),round(nrow(PBdf2)*0.75), replace = F)
+training <- PBdf2[sample_set,]
+testing <- PBdf2[-sample_set,]
+```
+
+## Adressing class imbalance using Synthetic Minority Oversampling Technique (SMOTE)
+The code below shows that there is a class imbalance between precipitation and no precipitation.
+```{r}
+round(prop.table(table(select(PBdf2, PrecipB),exclude = NULL)),4)*100
+round(prop.table(table(select(training, PrecipB),exclude = NULL)),4)*100
+round(prop.table(table(select(testing, PrecipB),exclude = NULL)),4)*100
+```
+
+I deal with this imbalance using SMOTE
+```{r}
+smote <- SMOTE(training, training$PrecipB)
+training.adj <- smote$data %>% select(-class)
+round(prop.table(table(select(training.adj, PrecipB),exclude = NULL)),4)*100
+```
+
+## Multicollinearity
+Visualizing Multicollinearity
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+PBdf2 %>% keep(is.numeric) %>% cor() %>% corrplot(type = "upper")
+```
+
+## Logistic regression
+
+Clearly, the different temperature variables are colinear with each other (glm automatically generates NAs for coefficients)
+```{r}
+train.mod <- glm(data = training.adj, family = binomial, 
+                 formula = PrecipB ~ .)
+summary(train.mod)
+exp(coef(train.mod))
+```
+
+```{r}
+training.adj2 <- training.adj %>% select(-Ave.Temp)
+train.mod2 <- glm(data = training.adj2, family = binomial, 
+                  formula = PrecipB ~ .)
+preds.1 <- predict(train.mod2, testing, type = 'response')
+#Clearly indicates Max.Temp, Min.Temp,and HDD are colinear
+vif(train.mod2)
+```
+
+```{r}
+training.adj3 <- training.adj2 %>% select(-Max.Temp,-Min.Temp)
+train.mod3 <- glm(data = training.adj3, family = binomial, 
+                  formula = PrecipB ~ Day + Year + HDD)
+summary(train.mod3)
+vif(train.mod3)
+```
+
+```{r}
+preds.2 <- predict(train.mod3, testing, type = 'response')
+
+ideal.cutoff <- optimalCutoff(
+  actuals = testing$PrecipB,
+  predictedScores = preds.2,
+  optimiseFor = "Both"
+)
+
+preds.3 <- ifelse(preds.2 >= ideal.cutoff,1,0)
+
+preds.table <- table(testing$PrecipB, preds.3)
+sum(diag(preds.table))/nrow(testing)
+```
+
+## Naive Bayes
+```{r}
+bayes.mod1 <- naiveBayes(PrecipB ~ Day + Year + HDD,
+                         data = training.adj3, laplace = 1)
+bayes.mod1
+
+bayes.pred1 <- predict(bayes.mod1, testing, type = "class")
+bayes.pred1.table <- table(testing$PrecipB, bayes.pred1)
+bayes.pred1.table
+sum(diag(bayes.pred1.table))/nrow(testing)
+```
+
+## *k*-Nearest Neighbors
+```{r}
+testing.knn <- testing %>% select(-Max.Temp,-Min.Temp,-Ave.Temp)
+
+train_labels <- as.factor(pull(training.adj3, PrecipB))
+test_labels <- as.factor(pull(testing.knn, PrecipB))
+
+k.spec <- sqrt(nrow(testing.knn))
+
+knn.preds1 <- knn(train = training.adj3,
+                  test = testing.knn,
+                  cl = train_labels,
+                  k=k.spec
+)
+
+head(knn.preds1)
+
+knn.predtbl <- table(test_labels, knn.preds1)
+knn.predtbl
+
+sum(diag(knn.predtbl))/nrow(testing.knn)
+```
+
+</font size="3">
 
 
 

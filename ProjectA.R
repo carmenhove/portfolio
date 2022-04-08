@@ -5,7 +5,8 @@
 pkgs = c("nhanesA","tidyverse","magrittr","knitr",
          "patchwork","ggpubr","scales","brms","mgcv",
         "sjlabelled","schoenberg","tidymv","broom",
-        "broom.mixed","tidybayes","calecopal")
+        "broom.mixed","tidybayes","calecopal","smotefamily",
+        "corrplot","car","e1071","InformationValue","class")
 
 #Install packages
 install.packages(pkgs)
@@ -18,7 +19,8 @@ devtools::install_github("karthik/wesanderson")
 library(wesanderson)
 
 #Rstan has been acting squirrely on my OS when I tweak adapt_delta and max treedepth. To get around this, I use cmdstranr on the back-end. 
-install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", 
+                                       getOption("repos")))
 library(cmdstanr)
 check_cmdstan_toolchain()
 install_cmdstan(cores = 2,overwrite = T)
@@ -70,9 +72,6 @@ PAdf1 <- full_join(BMI, DEMO) %>%
   mutate(Sex = ordered(Sex, levels = c("Male","Female")),
          Pregnant.Sex = ordered(Pregnant.Sex, levels = c("Male","NP Female","P Female")))
 
-#Structure of dataset
-str(PAdf1)
-
 #Pivot longer to create "Measure" variable
 PAdf2 <- PAdf1 %>% 
   pivot_longer(c(Testosterone,Estradiol), 
@@ -80,38 +79,9 @@ PAdf2 <- PAdf1 %>%
                values_to = "Value") %>% 
   filter(!is.na(Value))
 
-str(PAdf2)
-
-#Histogram of outcome variables
-ggplot(PAdf2, aes(x = Value, color = Sex))+
-  geom_histogram(bins = 30, alpha = 0.8)+
-  facet_grid(~ Measure, scales = "free")
-
-#No zero values
-sum(PAdf2$Value==0,na.rm = T)
-
-#Log-transformation
-ggplot(PAdf2, aes(x = log(Value), color = Sex))+
-  geom_histogram(bins = 30, alpha = 0.8)+
-  facet_grid(~ Measure, scales = "free")
-
 #Remove imputed values
 PAdf3 <- PAdf2 %>%  
   filter(Est.cc == 0 & Test.cc == 0)
-
-#Check distributions
-ggplot(PAdf3, aes(x = log(Value), color = Sex))+
-  geom_histogram(bins = 30, alpha = 0.8)+
-  facet_grid( ~ Measure,scales = "free")
-
-#What about pregnancy?
-table(PAdf3$Pregnant) #112 pregnant individuals in this dataset
-
-#Check plots to see how pregnancy relates to Estradiol
-ggplot(PAdf3, aes(x = Age, y = log(Value), color = Pregnant.Sex))+
-  geom_point()+
-  facet_grid(~ Measure, scales = "free")+
-  scale_color_manual(values = cal_palette("dudleya"))
 
 #Make the df a list, split by measure and sex (given sex-specific distributions)
 PAlist <- split(PAdf3, list(PAdf3$Measure, PAdf3$Sex))
@@ -164,7 +134,13 @@ brms.predvals <- plyr::ldply(map(brms.models, getbrmspreds),
 
 #Get gam models using mgcv 
 get.gams <- function(x){
-  model <- mgcv::gam(log(Value) ~ s(Age), 
+  #if(unique(x$Measure) == "Testosterone"){
+  #  knot.values = c(6,12,18,20,40,70)
+  #} else {knot.values = c(6,12,18,20,30,40,50,70)
+  #}
+
+  model <- mgcv::gam(log(Value) ~ s(Age),#, k =length(knot.values)),
+                     #knots = list(x = knot.values),
                      data = x, method = "REML")
   model$Measure = unique(x$Measure)
   model$Sex = unique(x$Sex)
@@ -185,41 +161,6 @@ gam.predvalues <- plyr::ldply(map(gam.models, getgampreds),
                               data.frame, .id = NULL) %>% 
   mutate(Model.Type = "GAM")
 
-str(gam.predvalues)
-str(brms.predvals)
-
 colorset1 = c('Male'='#A2A098','Female'='#5E6B7B')
 colorset2 = c('Male'='#A2A098','NP female'='#5E6B7B','P female'='#233D3F')
   
-ggplot(brms.predvals, aes(x = Age, y = lnValue, color =Sex))+
-  geom_point(data = PAdf3, aes(x = Age, y = log(Value),
-                               color = Sex))+
-  geom_line(size = 0.7)+
-  geom_ribbon(aes(ymin = Q2.5, ymax =Q97.5, group = Sex),
-              alpha=0.6, linetype = 0) +
-  facet_grid(~Measure,scales = "free")+
-  scale_color_manual(values = colorset1)+
-  labs(title = "predicted values using brms")
-
-ggplot(gam.predvalues, aes(x = Age, y = lnValue, 
-                           color = Sex)) + 
-  geom_line(size = 0.7)+
-  geom_point(data = PAdf3, aes(x = Age, y = log(Value),
-                               color = Sex), position = "jitter")+
-  geom_ribbon(aes(ymin = lnValue - se.fit, 
-                  ymax = lnValue + se.fit, 
-                  group = Sex),
-              alpha=0.6, linetype = 0,,show.legend = FALSE) +
-  facet_grid(~ Measure,scales = "free")+
-  scale_color_manual(values = cal_palette("dudleya"))+
-  scale_fill_manual(values = cal_palette("dudleya"))+
-  labs(title = "predicted values using gam")+
-  theme(legend.position = "bottom")
-
-
-#Point estimates
-#Testosterone predicts Estradiol?
-
-#Linear prediction (compare models, compare brms and glm)
-#Testosterone ~ Estradiol + (1|SEQN) + Age + BMI
-

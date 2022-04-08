@@ -274,22 +274,24 @@ $(document).ready(function () {
 </div>
 
 
-<div id="estradiol-and-testosterone-production-across-the-lifespan" class="section level2">
-<h2>Estradiol and testosterone production across the lifespan</h2>
-<p><img src="hormone_pic.jpeg" style="width:30.0%" /></p>
-<p><font size="4">In this for-fun side project, I estimate the effects of age on estradiol and testosterone production in both males and females (and use this query as an excuse to showcase the similarities and differences between the <a href="https://cran.r-project.org/web/packages/brms/index.html">brms</a> and <a href="https://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a> packages).</p>
-<p>I came up with the idea for this project during the first summer I served as a mentor for the <a href="https://summer.ucsb.edu/programs/research-mentorship-program/overview">UCSB research mentorship program</a>. After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is <em>only</em> produced by females and testosterone is <em>only</em> found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4"></p>
+<div id="how-does-age-affect-hormone-production" class="section level2">
+<h2>How does age affect hormone production?</h2>
+<p><font size="5"> Estimating the non-linear sex-specific effects of age on estradiol and testosterone levels using <a href="https://cran.r-project.org/web/packages/brms/index.html">brms</a> and <a href="https://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a> packages </font size="5"></p>
+<p><img src="sexes.png" style="width:100.0%" /></p>
+<p><font size="4"> I came up with the idea for this project during the first summer I served as a mentor for the <a href="https://summer.ucsb.edu/programs/research-mentorship-program/overview">UCSB research mentorship program</a>. After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is <em>only</em> produced by females and testosterone is <em>only</em> found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4"></p>
 </div>
 <div id="data-importing-and-cleaning" class="section level2">
 <h2>Data importing and cleaning</h2>
-<p><font size="4"> The complete <strong>R code</strong> for this project lives on <a href="https://github.com/carmenhove/portfolio/blob/main/ProjectA.Rmd">my GitHub repo</a>. </font size="4"></p>
+<p><font size="4"> The complete <strong>R code</strong> for this project lives on <a href="https://github.com/carmenhove/portfolio/blob/main/Hormones.R">my GitHub repo</a>. </font size="4"></p>
 <p>I utilized publicly available data collected by the <a href="https://www.cdc.gov/nchs/nhanes/about_nhanes.htm">National Health and Nutrition Examination Survey (NHANES)</a>. By searching through variable names in the <a href="https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx">NHANES codebook</a>, I found that both testosterone and estradiol were measured in males and females ages 6 and up during <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">2013-2014</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm">2015-2016</a> collection cycles. I also imported corresponding <a href="https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm">demographic</a>, <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm">BMI</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm">health data</a> and merged by SEQN (participant identification number).</p>
 <pre class="r"><code>#I utilized the following packages for this project.
 pkgs</code></pre>
-<pre><code>##  [1] &quot;nhanesA&quot;     &quot;tidyverse&quot;   &quot;magrittr&quot;    &quot;knitr&quot;       &quot;patchwork&quot;  
-##  [6] &quot;ggpubr&quot;      &quot;scales&quot;      &quot;brms&quot;        &quot;mgcv&quot;        &quot;sjlabelled&quot; 
-## [11] &quot;schoenberg&quot;  &quot;tidymv&quot;      &quot;broom&quot;       &quot;broom.mixed&quot; &quot;tidybayes&quot;  
-## [16] &quot;calecopal&quot;</code></pre>
+<pre><code>##  [1] &quot;nhanesA&quot;          &quot;tidyverse&quot;        &quot;magrittr&quot;         &quot;knitr&quot;           
+##  [5] &quot;patchwork&quot;        &quot;ggpubr&quot;           &quot;scales&quot;           &quot;brms&quot;            
+##  [9] &quot;mgcv&quot;             &quot;sjlabelled&quot;       &quot;schoenberg&quot;       &quot;tidymv&quot;          
+## [13] &quot;broom&quot;            &quot;broom.mixed&quot;      &quot;tidybayes&quot;        &quot;calecopal&quot;       
+## [17] &quot;smotefamily&quot;      &quot;corrplot&quot;         &quot;car&quot;              &quot;e1071&quot;           
+## [21] &quot;InformationValue&quot; &quot;class&quot;</code></pre>
 <pre class="r"><code>#Structure of initial, merged dataframe
 str(PAdf1)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    13144 obs. of  9 variables:
@@ -319,6 +321,7 @@ str(PAdf1)</code></pre>
 <p>The plot below gives an idea of how pregnancy status may be driving “extreme” values. <img src="ProjectA_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
 <p><img src="ProjectA_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
 <p><img src="ProjectA_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p></font size="3"></p>
 </div>
 
 

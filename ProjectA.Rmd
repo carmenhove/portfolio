@@ -6,13 +6,13 @@ output: html_document
 load("Portfolio.RData")
 inst = lapply(pkgs, library, character.only = TRUE) 
 ```
-## Estradiol and testosterone production across the lifespan
+## How does age affect hormone production?
 
-![](hormone_pic.jpeg){width=30%}
+<font size="5"> Estimating the non-linear sex-specific effects of age on estradiol and testosterone levels using [brms](https://cran.r-project.org/web/packages/brms/index.html) and [mgcv](https://cran.r-project.org/web/packages/mgcv/index.html) packages </font size="5">
 
-<font size="4">In this for-fun side project, I estimate the effects of age on estradiol and testosterone production in both males and females (and use this query as an excuse to showcase the similarities and differences between the [brms](https://cran.r-project.org/web/packages/brms/index.html) and [mgcv](https://cran.r-project.org/web/packages/mgcv/index.html) packages).
+![](sexes.png){width=100%}
 
-I came up with the idea for this project during the first summer I served as a mentor for the [UCSB research mentorship program](https://summer.ucsb.edu/programs/research-mentorship-program/overview). After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is *only* produced by females and testosterone is *only* found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4">
+<font size="4"> I came up with the idea for this project during the first summer I served as a mentor for the [UCSB research mentorship program](https://summer.ucsb.edu/programs/research-mentorship-program/overview). After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is *only* produced by females and testosterone is *only* found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4">
 
 ## Data importing and cleaning
 <font size="4"> The complete **R code** for this project lives on [my GitHub repo](https://github.com/carmenhove/portfolio/blob/main/Hormones.R). </font size="4">
@@ -35,6 +35,7 @@ By plotting histograms of the initial raw data, it's clear that there is a lot o
 ```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
 ggplot(PAdf2, aes(x = Value, color = Sex, fill = Sex))+
   geom_histogram(bins = 30, alpha = 0.8)+
+  geom_density(alpha=.2)+ 
   facet_grid(~ Measure, scales = "free")+
     scale_color_manual(values = colorset1)+
   scale_fill_manual(values = colorset1)
@@ -92,10 +93,9 @@ ggplot(brms.predvals, aes(x = Age, y = lnValue,
   geom_ribbon(aes(ymin = Q2.5, ymax =Q97.5, group = Sex),
               alpha=0.6, linetype = 0) +
   facet_grid(~Measure,scales = "free")+
-  scale_color_manual(values = cal_palette("superbloom3"))+
-    scale_fill_manual(values = cal_palette("superbloom3"))+
-  labs(title = "predicted values using brms",
-       y = "ln Testosterone (pg/mL)")
+  scale_color_manual(values = colorset1)+
+    scale_fill_manual(values = colorset1)+
+  labs(title = "predicted values using brms")
 ```
 
 ```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
@@ -109,10 +109,11 @@ ggplot(gam.predvalues, aes(x = Age, y = lnValue,
   geom_ribbon(aes(ymin = lnValue - se.fit, 
                   ymax = lnValue + se.fit, 
                   group = Sex),
-              alpha=0.6, linetype = 0,,show.legend = FALSE) +
+              alpha=0.6, linetype = 0) +
   facet_grid(~ Measure,scales = "free")+
-  scale_color_manual(values = cal_palette("superbloom3"))+
-    scale_fill_manual(values = cal_palette("superbloom3"))+
+  scale_color_manual(values = colorset1)+
+    scale_fill_manual(values = colorset1)+
   labs(title = "predicted values using gam")
 ```
 
+</font size="3">
