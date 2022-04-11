@@ -246,7 +246,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">About me</a>
+  <a href="index.html">About Me</a>
 </li>
 <li>
   <a href="ProjectA.html">Project A</a>
@@ -278,50 +278,67 @@ $(document).ready(function () {
 <h2>How does age affect hormone production?</h2>
 <p><font size="5"> Estimating the non-linear sex-specific effects of age on estradiol and testosterone levels using <a href="https://cran.r-project.org/web/packages/brms/index.html">brms</a> and <a href="https://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a> packages </font size="5"></p>
 <p><img src="sexes.png" style="width:100.0%" /></p>
-<p><font size="4"> I came up with the idea for this project during the first summer I served as a mentor for the <a href="https://summer.ucsb.edu/programs/research-mentorship-program/overview">UCSB research mentorship program</a>. After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is <em>only</em> produced by females and testosterone is <em>only</em> found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4"></p>
-</div>
-<div id="data-importing-and-cleaning" class="section level2">
-<h2>Data importing and cleaning</h2>
-<p><font size="4"> The complete <strong>R code</strong> for this project lives on <a href="https://github.com/carmenhove/portfolio/blob/main/Hormones.R">my GitHub repo</a>. </font size="4"></p>
-<p>I utilized publicly available data collected by the <a href="https://www.cdc.gov/nchs/nhanes/about_nhanes.htm">National Health and Nutrition Examination Survey (NHANES)</a>. By searching through variable names in the <a href="https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx">NHANES codebook</a>, I found that both testosterone and estradiol were measured in males and females ages 6 and up during <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">2013-2014</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm">2015-2016</a> collection cycles. I also imported corresponding <a href="https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm">demographic</a>, <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm">BMI</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm">health data</a> and merged by SEQN (participant identification number).</p>
-<pre class="r"><code>#I utilized the following packages for this project.
-pkgs</code></pre>
-<pre><code>##  [1] &quot;nhanesA&quot;          &quot;tidyverse&quot;        &quot;magrittr&quot;         &quot;knitr&quot;           
-##  [5] &quot;patchwork&quot;        &quot;ggpubr&quot;           &quot;scales&quot;           &quot;brms&quot;            
-##  [9] &quot;mgcv&quot;             &quot;sjlabelled&quot;       &quot;schoenberg&quot;       &quot;tidymv&quot;          
-## [13] &quot;broom&quot;            &quot;broom.mixed&quot;      &quot;tidybayes&quot;        &quot;calecopal&quot;       
-## [17] &quot;smotefamily&quot;      &quot;corrplot&quot;         &quot;car&quot;              &quot;e1071&quot;           
-## [21] &quot;InformationValue&quot; &quot;class&quot;</code></pre>
-<pre class="r"><code>#Structure of initial, merged dataframe
-str(PAdf1)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    13144 obs. of  9 variables:
+<p><font size="4"> I came up with the idea for this project while serving as a mentor for the <a href="https://summer.ucsb.edu/programs/research-mentorship-program/overview">UCSB research mentorship program</a>. After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is <em>only</em> produced by females and testosterone is <em>only</em> found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4"></p>
+<div id="data-importing-and-cleaning" class="section level3">
+<h3>Data importing and cleaning</h3>
+<p><font size="4"> The complete <strong>R code</strong> for this project lives <a href="https://github.com/carmenhove/portfolio/blob/main/Hormones.R">here</a>. </font size="4"></p>
+<p><font size="3"> I utilized publicly available data collected by the <a href="https://www.cdc.gov/nchs/nhanes/about_nhanes.htm">National Health and Nutrition Examination Survey (NHANES)</a>. By searching through variable names in the <a href="https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx">NHANES codebook</a>, I found that both testosterone and estradiol were measured in males and females ages 6 and up during <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">2013-2014</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm">2015-2016</a> collection cycles. I also imported corresponding <a href="https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm">demographic</a>, <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm">BMI</a> and <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm">health data</a> and merged by SEQN (participant identification number). <font size="3"></p>
+<pre class="r"><code>str(PAdf1)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    13144 obs. of  10 variables:
 ##  $ Testosterone: num  355.03 175.45 447 2.51 206.57 ...
 ##  $ Test.cc     : int  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ Estradiol   : num  14.8 14 26.5 2.12 22.3 ...
 ##  $ Est.cc      : int  0 0 0 1 0 0 1 0 0 0 ...
 ##  $ Pregnant    : chr  &quot;No&quot; &quot;No&quot; &quot;No&quot; &quot;No&quot; ...
-##  $ Pregnant.Sex: Ord.factor w/ 3 levels &quot;Male&quot;&lt;&quot;NP Female&quot;&lt;..: 1 1 1 1 1 NA NA 1 NA 1 ...
+##  $ Pregnant.Sex: Ord.factor w/ 3 levels &quot;Male&quot;&lt;&quot;NP female&quot;&lt;..: 1 1 1 1 1 2 2 1 2 1 ...
 ##  $ Age         : int  69 54 72 9 56 61 56 65 26 76 ...
 ##  $ Sex         : Ord.factor w/ 2 levels &quot;Male&quot;&lt;&quot;Female&quot;: 1 1 1 1 1 2 2 1 2 1 ...
-##  $ BMI         : num  26.7 28.6 28.9 17.1 41.7 35.7 26.5 22 20.3 34.4 ...</code></pre>
-<p><font size="4"> Checking assumptions of normality </font size="4"></p>
-<p>By plotting histograms of the initial raw data, it’s clear that there is a lot of variance in estradiol and testosterone values. <img src="ProjectA_files/figure-html/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
-<p>Based on visual inspection of the plots above, it appears like there could be excess zero-values in this dataset. However, a quick check indicates that there are none.</p>
+##  $ BMI         : num  26.7 28.6 28.9 17.1 41.7 35.7 26.5 22 20.3 34.4 ...
+##  $ AgeGroup    : chr  &quot;45+&quot; &quot;45+&quot; &quot;45+&quot; &quot;Under 20&quot; ...</code></pre>
+</div>
+<div id="checking-assumptions-of-normality" class="section level3">
+<h3>Checking assumptions of normality</h3>
+<p>Plotting initial density distributions for estradiol and testosterone indicated unexpectedly large variance. Based on visual inspection of the plots below, it seemed possible that there were excess zero-values. However, a quick check indicated that there were no zero-values for estradiol or testosterone. <img src="ProjectA_files/figure-html/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
 <pre class="r"><code>sum(PAdf2$Value==0,na.rm = T)</code></pre>
 <pre><code>## [1] 0</code></pre>
-<p>Since there are no zero-values in this data set, I can log transform raw estradiol and testosterone values. Based on the plot below, things are looking much better! But there are still super low values, which don’t make very much biological sense. <img src="ProjectA_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
-<p>A closer evaluation of the <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">NHANES data file</a> shows that these non-zero lower-than-expected values are likely <strong>imputed values</strong> that were generated for individuals who had assay results below the limit of detection.</p>
+<p>A closer evaluation of the <a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">NHANES data file</a> (screengrab below) indicated that these non-zero but lower-than-expected values were <strong>imputed values</strong> generated for individuals who had assay results below the limit of detection.</p>
 <p><img src="Imputed%20values.png" style="width:65.0%" /></p>
-<p>Since these imputed values reflect limits of assay sensitivity rather than biological reality, I remove these values from the data set and re-plot log-transformed estradiol and testosterone distributions. These look much better, but there are clearly still some “extreme” values (especially for estradiol). <img src="ProjectA_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
-<p>Another consideration is how pregnancy status among females may impact hormone levels, since biological knowledge suggests that estradiol is likely to be much higher during pregnancy. A quick check indicates that there are 112 pregnant females in this sample.</p>
+<p>Since these imputed values reflect limits of assay sensitivity rather than biological reality, I removed them from the dataset and then plotted log-transformed estradiol and testosterone distributions. <img src="ProjectA_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Another consideration is how pregnancy status among females may impact hormone levels, since biological knowledge suggests that estradiol is likely to be much higher during pregnancy. A quick check indicated that there were 112 pregnant females in this sample.</p>
 <pre class="r"><code>table(PAdf3$Pregnant.Sex)</code></pre>
 <pre><code>## 
 ##      Male NP female  P female 
 ##     12188      9558       112</code></pre>
-<p>The plot below gives an idea of how pregnancy status may be driving “extreme” values. <img src="ProjectA_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
-<p><img src="ProjectA_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p>The plot below gives an idea of how pregnancy status corresponds to “extreme” values, especially for estradiol.<br />
+<img src="ProjectA_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+</div>
+<div id="justifying-use-of-nonlinear-regression" class="section level3">
+<h3>Justifying use of nonlinear regression</h3>
+<p>A visual examination of the plot above clearly shows that the effects of age on estradiol and testosterone are non-linear in both sexes. As an example of how this plays outstatistically, I modeled log Testosterone ~ Age (in males only) using both glm() and gam() and used an anova test to compare these two models. As clearly shown in the anova test, the nonlinear regression is more appropriate.</p>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model 1: log(Value) ~ Age + BMI
+## Model 2: log(Value) ~ s(Age) + BMI
+##   Resid. Df Resid. Dev     Df Deviance  Pr(&gt;Chi)    
+## 1      6028     2051.9                              
+## 2      6020     1473.9 7.9671   578.01 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="frequentist-nonlinear-regression-using-gam" class="section level3">
+<h3>Frequentist nonlinear regression using gam()</h3>
+<p><img src="ProjectA_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+</div>
+<div id="fully-bayesian-models-using-brms" class="section level3">
+<h3>Fully Bayesian models using brms()</h3>
+<p>summary = rhat, effective sample size, estimate and credible intervals Simulation check (Caterpillar plots) Posterior fit check Point estimates</p>
 <p><img src="ProjectA_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+</div>
+<div id="comparing-methods" class="section level3">
+<h3>Comparing methods</h3>
+<p>Compare running times (gam much faster) Compare point estimates (credible intervals versus confidence intervals) Large dataset, so priors are basically washed out in brms model</p>
 <p></font size="3"></p>
+</div>
 </div>
 
 

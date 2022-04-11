@@ -2,7 +2,7 @@ name: "Carmen Hové"
 navbar:
   title: "Portfolio"
   left:
-    - text: "About me" #Page 1
+    - text: "About Me" #Page 1
       href: index.html
     - text: "Project A" #Page 2
       href: ProjectA.html
