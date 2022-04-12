@@ -75,11 +75,13 @@ PAdf1 <- full_join(BMI, DEMO) %>%
            #Est.cc == 0 & Test.cc == 0) %>% 
   select(Testosterone,Test.cc,Estradiol,Est.cc,Pregnant,
          Pregnant.Sex,Age,Sex,BMI,) %>% 
-  mutate(Sex = ordered(Sex, levels = c("Male","Female")),
+  mutate(#Sex = ordered(Sex, levels = c("Male","Female")),
          Pregnant.Sex = ordered(Pregnant.Sex, levels = c("Male","NP female","P female")),
          AgeGroup = case_when(Age < 20 ~ "Under 20",
                               Age >= 20 & Age <=45 ~ "20-45",
-                              Age > 45 ~ "45+"))
+                              Age > 45 ~ "45+"),
+         AgeGroup = ordered(AgeGroup, levels = c("Under 20",
+                            "20-45","45+")))
 
 #Pivot longer to create "Measure" variable
 PAdf2 <- PAdf1 %>% 
@@ -95,10 +97,10 @@ PAdf3 <- PAdf2 %>%
 #Remove pregnant individuals
 PAdf4 <- PAdf3 %>% filter(Pregnant == "No")
 
-ggplot(PAdf4 %>% filter(Measure == "Testosterone" & Sex == "Male"), 
-               aes(x = log(Value), color = Sex, fill = Sex))+
+ggplot(PAdf4,#%>% filter(Measure == "Testosterone"), 
+       aes(x = Value, color = Sex, fill = Sex))+
        geom_density(alpha = 0.5)+ 
-       facet_grid(Sex ~ AgeGroup, scales = "free")+
+       facet_grid( ~ Measure, scales = "free")+
        scale_color_manual(values = colorset1)+
        scale_fill_manual(values = colorset1) 
 
@@ -106,7 +108,9 @@ ggplot(PAdf4, aes(x = Age, y = log(Value), color = Sex))+
   geom_point(position = "jitter")+
   facet_grid(Measure ~., scales = "free")+
   scale_color_manual(values = colorset1)+
-  scale_fill_manual(values = colorset1) 
+  scale_fill_manual(values = colorset1)
+
+
 
 #Make the df a list, split by measure and sex (given sex-specific distributions)
 PAlist <- split(PAdf4, list(PAdf4$Measure,PAdf4$Sex))
@@ -121,6 +125,7 @@ get.glms <- function(x){
 }
 
 glm.models <- map(PAlist, get.glms)
+system.time(result <- myfunction(with, arguments))
 
 #Get gam models using mgcv 
 get.gams <- function(x){
@@ -131,7 +136,7 @@ get.gams <- function(x){
   model <- mgcv::gam(log(Value) ~ s(Age)+BMI,
                      k =length(knot.values),
                      knots = list(x = knot.values),
-                     data = x, method = "REML")
+                     data = x)
   model$Measure = unique(x$Measure)
   model$Sex = unique(x$Sex)
   model
@@ -178,7 +183,7 @@ ggplot(gam.predvals, aes(x = Age, y = lnValue,
                   ymax = lnValue + se.fit, 
                   group = Sex),
               alpha=0.6, linetype = 0) +
-  facet_grid(~ Measure,scales = "free")+
+  facet_grid(Measure ~.,scales = "free")+
   scale_color_manual(values = colorset1)+
   scale_fill_manual(values = colorset1)
 
@@ -212,8 +217,6 @@ get.brms <- function(x){
 brms.models <- map(PAlist,get.brms)
 brms.summaries <- map(brms.models, summary)
 
-check
-
 #Create function to gather tidy predicted draws from each model
 getbrmspreds <- function(x){
   #Age values from original datasets
@@ -236,3 +239,8 @@ brms.predvals <- plyr::ldply(map(brms.models, getbrmspreds),
 #Compare point-estimates
 gam.predvals %>% filter(Age == 29)
 brms.predvals %>% filter(Age ==29)
+
+#Comparing run time
+system.time(gam.models <- map(PAlist, get.gams))
+system.time(brms.models <- map(PAlist, get.brms))
+

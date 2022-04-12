@@ -2,14 +2,12 @@
 title: "About Me"
 output: html_document
 ---
-### Hi, my name is Carmen and I'm a **quantitative research scientist**
+## Hi, my name is Carmen and I'm a **quantitative research scientist**
+<font size="4"> With an BS in biology, a PhD in Biological Anthropology, and over 7 years of experience analyzing complex real-world datasets, my analytical skills are built on firm understanding of biological mechanisms and evolutionary context. For sample analysis projects, see [Project A](https://carmenhove.github.io/portfolio/ProjectA.html) and [Project B](https://carmenhove.github.io/portfolio/ProjectB.html) tabs. For links to peer-reviewed papers I've co-authored, see the [Publications](https://carmenhove.github.io/portfolio/Publications.html) tab. If you'd like to get in touch, please send me a message!
 
-<font size="4 "> **My background**: With an BS in biology, a PhD in Biological Anthropology, and over 7 years of experience analyzing complex real-world datasets, my quantitative research skills are built on firm understanding of biological mechanisms and evolutionary context. Analytic experience includes linear and logistic regression, nonparametric regression, Bayesian hierarchical/multilevel models, Naive Bayes classification, and *k*-Nearest Neighbors cluster analysis. 
-
-**This portfolio**: For examples of my work, please see projects under [Project A](https://carmenhove.github.io/portfolio/ProjectA.html) and [Project B](https://carmenhove.github.io/portfolio/ProjectB.html). For links to peer-reviewed papers I've co-authored, see [Publications](https://carmenhove.github.io/portfolio/Publications.html). If you'd like to get in touch, please don't hesitate to send me a message.
-
-**Contact**:
+### Contact
 Email: hove.cm@gmail.com | LinkedIn: [linkedin.com/in/carmenhove/](https://www.linkedin.com/in/carmenhove/) | GitHub: [github.com/carmenhove](https://github.com/carmenhove)
+</font size="4">
 
 ![](editedliver.jpg){width=100%}
 <font size="2.5"> <figcaption align = "center"> Hepatocyte (triptych oil on canvas), by Alexa Carr </figcaption></font size="2.5">

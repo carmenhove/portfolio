@@ -10,9 +10,9 @@ inst = lapply(pkgs, library, character.only = TRUE)
 
 <font size="5"> Estimating the non-linear sex-specific effects of age on estradiol and testosterone levels using [brms](https://cran.r-project.org/web/packages/brms/index.html) and [mgcv](https://cran.r-project.org/web/packages/mgcv/index.html) packages </font size="5">
 
-![](sexes.png){width=100%}
+![](hormones2.jpeg){width=75%}
 
-<font size="4"> I came up with the idea for this project while serving as a mentor for the [UCSB research mentorship program](https://summer.ucsb.edu/programs/research-mentorship-program/overview). After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is *only* produced by females and testosterone is *only* found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4">
+<font size="4"> I came up with the idea for this fun side project while serving as a mentor for the [UCSB research mentorship program](https://summer.ucsb.edu/programs/research-mentorship-program/overview). After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is *only* produced by females and testosterone is *only* found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4">
 
 ### Data importing and cleaning
 <font size="4"> The complete **R code** for this project lives [here](https://github.com/carmenhove/portfolio/blob/main/Hormones.R). </font size="4">
@@ -25,7 +25,7 @@ str(PAdf1)
 
 ### Checking assumptions of normality
 
-Plotting initial density distributions for estradiol and testosterone indicated unexpectedly large variance. Based on visual inspection of the plots below, it seemed possible that there were excess zero-values. However, a quick check indicated that there were no zero-values for estradiol or testosterone.
+Plotting initial density distributions for estradiol and testosterone indicated unexpectedly large variance. Based on visual inspection of the plots below, it seemed possible that there were excess zero-values. 
 ```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
 ggplot(PAdf2, aes(x = Value, color = Sex, fill = Sex))+
   geom_histogram(bins = 30, alpha = 0.8)+
@@ -34,6 +34,8 @@ ggplot(PAdf2, aes(x = Value, color = Sex, fill = Sex))+
     scale_color_manual(values = colorset1)+
   scale_fill_manual(values = colorset1)
 ```
+
+A quick check indicated that there were **no** zero-values for estradiol or testosterone.
 ```{r}
 sum(PAdf2$Value==0,na.rm = T)
 ```
@@ -51,22 +53,10 @@ ggplot(PAdf3, aes(x = log(Value), color = Sex, fill = Sex))+
   scale_fill_manual(values = colorset1)
 ```
 
-Another consideration is how pregnancy status among females may impact hormone levels, since biological knowledge suggests that estradiol is likely to be much higher during pregnancy. A quick check indicated that there were 112 pregnant females in this sample. 
+Considering the well-known effects of pregnancy on hormone production, I also checked to see how many pregnant women were in my sample and how they might be driving "extreme" values. A quick check indicated that there were 112 pregnant females in my sample. For the purpose of this project, I removed pregnant individuals from the final sample.
 ```{r}
 table(PAdf3$Pregnant.Sex)
 ```
-
-Lastly, I broke my sample into age groups roughly lined up with female reproductive phase (e.g., pre-menarche, reproductive, post-menopausal)
-```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
-ggplot(PAdf3 %>% filter(Measure == "Testosterone"), 
-        aes(x = log(Value), color = Sex, fill = Sex))+
-     geom_density(alpha = 0.5)+ 
-     facet_grid(~ Sex, scales = "free")+
-     scale_color_manual(values = colorset1)+
-     scale_fill_manual(values = colorset1)
-```
-
-The plot below gives an idea of how pregnancy status corresponds to "extreme" values, especially for estradiol.  
 ```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
 ggplot(PAdf3, aes(x = Age, y = log(Value), color = Pregnant.Sex))+
   geom_point(position = "jitter")+
@@ -74,22 +64,32 @@ ggplot(PAdf3, aes(x = Age, y = log(Value), color = Pregnant.Sex))+
   scale_color_manual(values = colorset2)
 ```
 
+### Sex-specific models
+Given the difference in distribution parameters between males and females, I built sex-specific models which allowed for better model fit. For all model evaluation methods described below, I use the "Testosterone.Male" model to generate each example rather than provide the code for all four models ("Testosterone.Female","Estradiol.Male","Estradiol.Female"). 
+
 ### Justifying use of nonlinear regression
-A visual examination of the plot above clearly shows that the effects of age on estradiol and testosterone are non-linear in both sexes. As an example of how this plays outstatistically, I modeled log Testosterone ~ Age + BMI (in males only) using both glm() and gam() and used an anova test to compare these two models. As clearly shown in the anova test, the nonlinear regression is more appropriate.
+A visual examination of the plot below clearly shows that the effects of age on estradiol and testosterone are non-linear in both sexes. 
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+ggplot(PAdf4, aes(x = Age, y = log(Value), 
+                  color = Sex))+
+  geom_point(position = "jitter")+
+  facet_grid(~ Measure, scales = "free")+
+  scale_color_manual(values = colorset2)
+```
+
+To confirm this statistically, I used an ANOVA test to compare linear (glm) versus nonlinear (gam) models. As clearly shown in the example ANOVA test below, nonlinear regression was warranted. 
 ```{r, echo=FALSE}
 anova(glm.models[["Testosterone.Male"]],
       gam.models[["Testosterone.Male"]],test="Chisq")
 ```
 
-### Frequentist nonlinear regression using gam()
+### Frequentist nonlinear regression using mgcv
 
+Below is a plot of gam predicted mean values for testosterone and estradiol, clearly showing the sex-specific non-linear effects of age on hormone production.
 ```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
 ggplot(gam.predvals, aes(x = Age, y = lnValue, 
                            color = Sex, fill = Sex)) + 
   geom_line(size = 0.7)+
-  #geom_point(data = PAdf3, aes(x = Age, y = log(Value),
-  #                             color = Sex), 
-  #           position = "jitter", alpha = 0.3)+
   geom_ribbon(aes(ymin = lnValue - se.fit, 
                   ymax = lnValue + se.fit, 
                   group = Sex),
@@ -99,23 +99,32 @@ ggplot(gam.predvals, aes(x = Age, y = lnValue,
     scale_fill_manual(values = colorset1)
 ```
 
-### Fully Bayesian models using brms()
-summary = rhat, effective sample size, estimate and credible intervals
-Simulation check (Caterpillar plots)
-Posterior fit check
-Point estimates
+### Bayesian nonlinear regression using brms
+I also ran the same models using [brms](https://cran.r-project.org/web/packages/brms/vignettes/brms_overview.pdf) in order to compare predicted values between frequentist and Bayesian nonlinear regression models. 
+When evaluating a Bayesian model, two components need to be checked: the simulation (Markov chain Monte Carlo, in the case of brms models) and the posterior fit. To this end, I checked the Rhat values and caterpillar plots for each model to make sure the chains converged. As with the gam models above, I used the "Testosterone.Male" model to exemplify the process of checking simulation convergence and posterior fit. 
 
+#### Checking the simulation
+
+All Rhat values equal 1, indicating proper chain convergence. *The warning message that there were 3 divergent transitions after warmup is [not cause for concern](https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup), since this is a tiny number relative to the number of samples taken and our Rhat values equal 1.*
 ```{r}
-
+summary(brms.models[["Testosterone.Male"]])
 ```
 
-```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
+Caterpillar plots (on right-hand panel) show excellent mixing between chains.
+```{r, fig.height = 6, fig.width = 5, fig.align = "left"}
+plot(brms.models[["Testosterone.Male"]])
+```
 
+This plot shows the model predicted values (y) graphed over 10 draws from the data (y rep), indicating good posterior fit. 
+```{r, fig.height = 3, fig.width = 3, fig.align = "left"}
+pp_check(brms.models[["Testosterone.Male"]])
+```
+
+#### Graphing posterior predicted values
+The plot below shows the predicted mean values, standardized by median BMI.
+```{r, fig.height = 3, fig.width = 6, fig.align = "left",echo=FALSE}
 ggplot(brms.predvals, aes(x = Age, y = lnValue, 
                           color =Sex, fill = Sex))+
-  #geom_point(data = PAdf3, aes(x = Age, y = log(Value),
-  #                             color = Sex),
-  #           position = "jitter", alpha = 0.3)+
   geom_line(size = 0.7)+
   geom_ribbon(aes(ymin = Q2.5, ymax =Q97.5, group = Sex),
               alpha=0.6, linetype = 0) +
@@ -123,13 +132,5 @@ ggplot(brms.predvals, aes(x = Age, y = lnValue,
   scale_color_manual(values = colorset1)+
     scale_fill_manual(values = colorset1)
 ```
-
-
-### Comparing methods
-Compare running times (gam much faster)
-Compare point estimates (credible intervals versus confidence intervals)
-Large dataset, so priors are basically washed out in brms model
-
-
 
 </font size="3">

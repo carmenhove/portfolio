@@ -3,7 +3,7 @@ title: "Publications"
 output: html_document
 ---
 
-<font size="4"> Due to confidentiality considerations and co-author preferences, I don't include analyses for pending publications on this website or my github. Please see below for already-published papers. </font size="4">
+<font size="4"> Due to journal guidelines and co-author preferences, I don't include analyses for pending publications on this website or my github. Please see below for already-published papers. </font size="4">
 
 ![](Publications-Header.jpeg){width=90%}
 
