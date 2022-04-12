@@ -3,7 +3,9 @@ title: "About Me"
 output: html_document
 ---
 ## Hi, my name is Carmen and I'm a **quantitative research scientist**
-<font size="4"> With an BS in biology, a PhD in Biological Anthropology, and over 7 years of experience analyzing complex real-world datasets, my analytical skills are built on firm understanding of biological mechanisms and evolutionary context. For sample analysis projects, see [Project A](https://carmenhove.github.io/portfolio/ProjectA.html) and [Project B](https://carmenhove.github.io/portfolio/ProjectB.html) tabs. For links to peer-reviewed papers I've co-authored, see the [Publications](https://carmenhove.github.io/portfolio/Publications.html) tab. If you'd like to get in touch, please send me a message!
+<font size="4"> With an BS in biology, a PhD in Biological Anthropology, and over 7 years of experience analyzing complex real-world datasets, my analytical skills are built on firm understanding of biological mechanisms and evolutionary context. 
+
+Due to journal guidelines and co-author preferences, I don't include analyses for pending publications in this portfolio (my [résumé](https://docs.google.com/document/d/1TMogBjU782P3lZW2Z-SYZIDBPETCoxbK/edit?usp=sharing&ouid=100924025254195710264&rtpof=true&sd=true) includes an overview of my primary projects). [Project A](https://carmenhove.github.io/portfolio/ProjectA.html) and [Project B](https://carmenhove.github.io/portfolio/ProjectB.html) are side projects done for the purpose of showcasing analytical methods. For links to peer-reviewed papers I've co-authored, see the [Publications](https://carmenhove.github.io/portfolio/Publications.html) tab. If you'd like to get in touch, please send me a message!
 
 ### Contact
 Email: hove.cm@gmail.com | LinkedIn: [linkedin.com/in/carmenhove/](https://www.linkedin.com/in/carmenhove/) | GitHub: [github.com/carmenhove](https://github.com/carmenhove)
