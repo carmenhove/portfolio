@@ -3,10 +3,8 @@ title: "Publications"
 output: html_document
 ---
 
-<font size="4"> Due to journal guidelines and co-author preferences, I don't include analyses for pending publications on this website or my github. Please see below for already-published papers. </font size="4">
-
-![](Publications-Header.jpeg){width=90%}
-
 <font size="4"> [Immune function during pregnancy varies between ecologically dinstinct populations](https://academic.oup.com/emph/article/2020/1/114/5866980) </font size="4"> <br/> <font size="3">*First author: study design, paper writing, all statistical analyses/figures/tables*</font size="3">
 
 <font size="4">[Old friends and friendly fire: Pregnancy, hookworm infection, and anemia among tropical horticulturalists](https://onlinelibrary.wiley.com/doi/abs/10.1002/ajhb.23337) </font size="4"> <br/> <font size="3">*Third author: paper writing, editing, proofreading* </font size="3">
+
+![](Publications-Header.jpeg){width=90%}

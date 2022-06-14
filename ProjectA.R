@@ -3,8 +3,10 @@ library(visreg)
 #PROJECT A
 
 #Identify packages 
-pkgs = c("nhanesA","tidyverse","magrittr","knitr",
-         "patchwork","ggpubr","scales","brms","mgcv",
+pkgs = c("nhanesA",#"tidyverse",
+         "magrittr","knitr",
+         "patchwork","ggpubr","scales",#"brms",
+         "mgcv",
         "sjlabelled","schoenberg","tidymv","broom",
         "broom.mixed","tidybayes","calecopal","smotefamily",
         "corrplot","car","e1071","InformationValue","class")

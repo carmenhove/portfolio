@@ -140,7 +140,7 @@ ggplot(knn.df, aes(x = Kvalue, y = Value))+
 ```
 
 ### Conclusion
-By comparing logistic regression, Naïve Bayes, and *k*-Nearest Neighbors, it's clear that *k*-Nearest Neighbors provides the best predictions on whether or not it will precipitate in Seattle on any given day in December. This is likely influenced by the relatively small sample size and low dimensionality of this particular dataset, which allows for fast computation using this lazy-learning method. 
+By comparing logistic regression, Naïve Bayes, and *k*-Nearest Neighbors, it's clear that *k*-Nearest Neighbors provides the best predictions on whether or not it will precipitate in Seattle on any given day in December. This is likely influenced by the relatively small sample size and low dimensionality of this particular dataset, which allows for fast computation using this lazy-learning method.  
 
 ![](rain2.jpeg){width=75%}
 
