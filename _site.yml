@@ -1,13 +1,15 @@
-name: "Carmen Hové"
+name: "Carmen Hove"
 navbar:
   title: "Portfolio"
   left:
     - text: "About Me" #Page 1
       href: index.html
-    - text: "Project A" #Page 2
-      href: ProjectA.html
-    - text: "Project B" #Page 3
-      href: ProjectB.html
+    - text: "Biostatistics/ML" #Page 2
+      href: Biostatistics.html
+    - text: "Bioanalytics" #Page 3
+      href: Bioanalytics.html
     - text: "Publications" #Page 4
       href: Publications.html
+    - text: "CV/Resume" #Page 4
+      href: CVResume.html
 output_dir: "docs"

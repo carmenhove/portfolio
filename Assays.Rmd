@@ -1,0 +1,7 @@
+---
+title: "Wet Lab"
+output: html_document
+---
+
+![](Hemaspots.jpg){width=25%} ![](blue.jpg){width=33%}![](Saliva.jpg){width=33%}
+

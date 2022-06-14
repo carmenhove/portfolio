@@ -1,0 +1,17 @@
+---
+title: "CV / Resume"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("xfun")
+library(xfun)
+```
+
+### Click on the links below to access my CV and Resume
+
+```{r}
+xfun::embed_file("Hove_Application.pdf")
+```
+

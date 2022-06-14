@@ -2,13 +2,27 @@
 title: "About Me"
 output: html_document
 ---
-## Hi, my name is Carmen and I'm a **quantitative research scientist**
-<font size="4"> With an BS in biology, a PhD in Biological Anthropology, and over 7 years of experience analyzing complex real-world datasets, my analytical skills are built on firm understanding of biological mechanisms and evolutionary context. 
 
-Please click ([here](https://docs.google.com/document/d/1TMogBjU782P3lZW2Z-SYZIDBPETCoxbK/edit?usp=sharing&ouid=100924025254195710264&rtpof=true&sd=true) for my resume. [Project A](https://carmenhove.github.io/portfolio/ProjectA.html) and [Project B](https://carmenhove.github.io/portfolio/ProjectB.html) are side projects done for the purpose of showcasing analytical methods. For links to peer-reviewed papers I've co-authored, see the [Publications](https://carmenhove.github.io/portfolio/Publications.html) tab. If you'd like to get in touch, please send me a message!
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("xfun")
+library(xfun)
+```
+
+<img align="right" width="270" height="270" hspace = "10" src=face.jpg>
+
+### Hi, I'm Carmen and I'm a quantitative research scientist
+<font size="4"> I hold a BS in biology, a PhD in Physical & Biological Anthropology, and have over 7 years of end-to-end research experience.  
+
+### CV / Resume
+
+```{r}
+xfun::embed_file("Hove_Application.pdf")
+```
 
 ### Contact
-Email: hove.cm@gmail.com | LinkedIn: [linkedin.com/in/carmenhove/](https://www.linkedin.com/in/carmenhove/) | GitHub: [github.com/carmenhove](https://github.com/carmenhove)
+Email: hove.cm@gmail.com | 
+[LinkedIn](https://www.linkedin.com/in/carmenhove/) | [Github](https://github.com/carmenhove) | [Twitter](https://twitter.com/CarmenHove)
 </font size="4">
 
 ![](editedliver.jpg){width=100%}

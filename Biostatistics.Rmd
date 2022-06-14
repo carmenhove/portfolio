@@ -1,0 +1,13 @@
+---
+title: "Biostatistics / ML"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+[Estimating the non-linear sex-specific effects of age on estradiol and testosterone levels using brms and mgcv packages](ProjectA.html)
+
+[A machine learning project using logistic regression, Naïve Bayes, and *k*-Nearest neighbors to predict precipitation in Seattle](ProjectB.html)
+

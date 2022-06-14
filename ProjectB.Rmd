@@ -1,5 +1,5 @@
 ---
-title: "Project B"
+title: "Machine Learning"
 output: html_document
 ---
 
@@ -8,9 +8,7 @@ load("Portfolio.RData")
 inst = lapply(pkgs, library, character.only = TRUE) 
 ```
 
-## Will there be precipitation in Seattle? 
-
-<font size="5"> A simple machine learning project using logistic regression, Naïve Bayes, and *k*-Nearest neighbors to predict precipitation </font size="5">
+<font size="5"> A machine learning project using logistic regression, Naïve Bayes, and *k*-Nearest neighbors to predict precipitation in Seattle </font size="5">
 
 ![](SeattleSkyline.jpeg){width=75%}
 

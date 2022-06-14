@@ -11,7 +11,7 @@
 
 
 
-<title>Project B</title>
+<title>Machine Learning</title>
 
 <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -249,13 +249,16 @@ $(document).ready(function () {
   <a href="index.html">About Me</a>
 </li>
 <li>
-  <a href="ProjectA.html">Project A</a>
+  <a href="Biostatistics.html">Biostatistics/ML</a>
 </li>
 <li>
-  <a href="ProjectB.html">Project B</a>
+  <a href="Bioanalytics.html">Bioanalytics</a>
 </li>
 <li>
   <a href="Publications.html">Publications</a>
+</li>
+<li>
+  <a href="CVResume.html">CV/Resume</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -269,19 +272,27 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Project B</h1>
+<h1 class="title toc-ignore">Machine Learning</h1>
 
 </div>
 
 
-<div id="will-there-be-precipitation-in-seattle" class="section level2">
-<h2>Will there be precipitation in Seattle?</h2>
-<p><font size="5"> A simple machine learning project using logistic regression, Naïve Bayes, and <em>k</em>-Nearest neighbors to predict precipitation </font size="5"></p>
+<p><font size="5"> A machine learning project using logistic regression,
+Naïve Bayes, and <em>k</em>-Nearest neighbors to predict precipitation
+in Seattle </font size="5"></p>
 <p><img src="SeattleSkyline.jpeg" style="width:75.0%" /></p>
 <div id="data-importing-and-cleaning" class="section level3">
 <h3>Data importing and cleaning</h3>
-<p><font size="4"> The complete <strong>R code</strong> for this project lives <a href="https://github.com/carmenhove/portfolio/blob/main/ProjectB.R">here</a>. </font size="4"></p>
-<p><font size="3"> I used weather data collected by <a href="https://w1.weather.gov/climate/xmacis.php?wfo=sew">National Weather Service</a> for every December day in Seattle from 1990 to 2021. These data included date, max/min/average temperature, average temperature departure from “normal” (departure), heating degree days (HDD), cooling degree days (CDD), and inches precipitation.</p>
+<p><font size="4"> The complete <strong>R code</strong> for this project
+lives <a
+href="https://github.com/carmenhove/portfolio/blob/main/ProjectB.R">here</a>.
+</font size="4"></p>
+<p><font size="3"> I used weather data collected by <a
+href="https://w1.weather.gov/climate/xmacis.php?wfo=sew">National
+Weather Service</a> for every December day in Seattle from 1990 to 2021.
+These data included date, max/min/average temperature, average
+temperature departure from “normal” (departure), heating degree days
+(HDD), cooling degree days (CDD), and inches precipitation.</p>
 <pre class="r"><code>str(PBdf1)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    989 obs. of  8 variables:
 ##  $ Date         : chr  &quot;12/1/21&quot; &quot;12/2/21&quot; &quot;12/3/21&quot; &quot;12/4/21&quot; ...
@@ -292,7 +303,11 @@ $(document).ready(function () {
 ##  $ HDD          : chr  &quot;11&quot; &quot;20&quot; &quot;26&quot; &quot;25&quot; ...
 ##  $ CDD          : chr  &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
 ##  $ Precipitation: chr  &quot;0&quot; &quot;0.04&quot; &quot;0&quot; &quot;0.64&quot; ...</code></pre>
-<p>All variables had values with leading and/or trailing white spaces that couldn’t be removed using a simple gsub() function. Closer examination showed that this was because most of the variables were in utf8 format, so I created a simple function to fix these erroneously formatted values.</p>
+<p>All variables had values with leading and/or trailing white spaces
+that couldn’t be removed using a simple gsub() function. Closer
+examination showed that this was because most of the variables were in
+utf8 format, so I created a simple function to fix these erroneously
+formatted values.</p>
 <pre class="r"><code>utf8::utf8_print(unique(PBdf1$Ave.Temp), utf8 = FALSE)</code></pre>
 <pre><code>##   [1] &quot;54&quot;         &quot;45&quot;         &quot;39&quot;         &quot;40&quot;         &quot;38&quot;        
 ##   [6] &quot;41&quot;         &quot;47&quot;         &quot;41.5&quot;       &quot;38.5&quot;       &quot;39.5&quot;      
@@ -316,7 +331,10 @@ $(document).ready(function () {
 ##  [96] &quot;17.5\u00a0&quot; &quot;16.0\u00a0&quot; &quot;12.0\u00a0&quot; &quot;14.5\u00a0&quot; &quot;M\u00a0&quot;   
 ## [101] &quot;20.0\u00a0&quot; &quot;12.5\u00a0&quot; &quot;11.0\u00a0&quot; &quot;16.5\u00a0&quot; &quot;14.0\u00a0&quot;</code></pre>
 <pre class="r"><code>replace.values &lt;- function(x) x &lt;- iconv(x, &quot;latin1&quot;, &quot;ASCII&quot;, sub=&quot;&quot;)</code></pre>
-<p>In addition to replacing the utf8 formatting, I corrected formatting inconsistencies in the Date variable and created a binary precipitation variable for classification analysis called PrecipB (0 = NO precipitation, 1 = YES precipitation).</p>
+<p>In addition to replacing the utf8 formatting, I corrected formatting
+inconsistencies in the Date variable and created a binary precipitation
+variable for classification analysis called PrecipB (0 = NO
+precipitation, 1 = YES precipitation).</p>
 <pre class="r"><code>PBdf2 &lt;- PBdf1 %&gt;% 
   #Remove &quot;T&quot; and &quot;M&quot; values for precipitation, as there is no public documentation to indicate what these values mean (and there are only a few instances in the dataset)
   filter(!grepl(&quot;T&quot;,Precipitation, fixed = T),
@@ -353,7 +371,8 @@ $(document).ready(function () {
 </div>
 <div id="splitting-data" class="section level3">
 <h3>Splitting data</h3>
-<p>I separated the initial dataset into training and testing datasets using a 3:1 split ratio.</p>
+<p>I separated the initial dataset into training and testing datasets
+using a 3:1 split ratio.</p>
 <pre class="r"><code>set.seed(1234)
 sample_set &lt;- sample(nrow(PBdf2),round(nrow(PBdf2)*0.75), replace = F)
 training &lt;- PBdf2[sample_set,]
@@ -361,7 +380,10 @@ testing &lt;- PBdf2[-sample_set,]</code></pre>
 </div>
 <div id="class-imbalance" class="section level3">
 <h3>Class imbalance</h3>
-<p>As shown below, there was a class imbalance in PrecipB (more precipitation days than non-precipitation days), so I used Synthetic Minority Oversampling Technique (SMOTE) to balance the training dataset.</p>
+<p>As shown below, there was a class imbalance in PrecipB (more
+precipitation days than non-precipitation days), so I used Synthetic
+Minority Oversampling Technique (SMOTE) to balance the training
+dataset.</p>
 <pre class="r"><code>round(prop.table(table(select(PBdf2, PrecipB),exclude = NULL)),4)*100</code></pre>
 <pre><code>## 
 ##     0     1 
@@ -375,11 +397,22 @@ round(prop.table(table(select(training.adj, PrecipB),exclude = NULL)),4)*100</co
 </div>
 <div id="multicollinearity" class="section level3">
 <h3>Multicollinearity</h3>
-<p>Before model-building, I examined the potential for multicollinearity between variables. Given the inherent relationship between minimum, maximum, and average temperature, HDD, CDD, and Departure I expected to find substantial multicollinearity between these variables but was unsure which would be the best proxy for current weather. As shown below, Departure was strongly correlated with all the other weather-related variables, so I decided to use Departure as my proxy for weather/temp (with Day and Year as additional co-variates). <img src="ProjectB_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Before model-building, I examined the potential for multicollinearity
+between variables. Given the inherent relationship between minimum,
+maximum, and average temperature, HDD, CDD, and Departure I expected to
+find substantial multicollinearity between these variables but was
+unsure which would be the best proxy for current weather. As shown
+below, Departure was strongly correlated with all the other
+weather-related variables, so I decided to use Departure as my proxy for
+weather/temp (with Day and Year as additional co-variates).
+<img src="ProjectB_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
 </div>
 <div id="logistic-regression" class="section level3">
 <h3>Logistic regression</h3>
-<p>Since my aim was to determine how well Departure predicted presence/absence of precipitation, Precip was my outcome variable and Departure was my primary explanatory variable with Day and Year included as predictors (shown under “class” in the model summary below).</p>
+<p>Since my aim was to determine how well Departure predicted
+presence/absence of precipitation, Precip was my outcome variable and
+Departure was my primary explanatory variable with Day and Year included
+as predictors (shown under “class” in the model summary below).</p>
 <pre class="r"><code>summary(logitm1)</code></pre>
 <pre><code>## 
 ## Call:
@@ -406,28 +439,42 @@ round(prop.table(table(select(training.adj, PrecipB),exclude = NULL)),4)*100</co
 ## AIC: 985.25
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
-<p>A quick check of the variance inflation factors (VIF) for each predictor variable indicated there was no substantial multicollinearity between variables (i.e, no VIF values about 5).</p>
+<p>A quick check of the variance inflation factors (VIF) for each
+predictor variable indicated there was no substantial multicollinearity
+between variables (i.e, no VIF values about 5).</p>
 <pre class="r"><code>vif(logitm1)</code></pre>
 <pre><code>## Departure       Day      Year 
 ##  1.010410  1.006763  1.003814</code></pre>
-<p>To get the estimated change in odds rather than log-odds, I exponentiated the raw model coefficients. As shown below, assuming other co-variates are held constant, for one unit increase in Departure the odds of precipitation increase by a factor of ~1.25.</p>
+<p>To get the estimated change in odds rather than log-odds, I
+exponentiated the raw model coefficients. As shown below, assuming other
+co-variates are held constant, for one unit increase in Departure the
+odds of precipitation increase by a factor of ~1.25.</p>
 <pre class="r"><code>exp(coef(logitm1)[c(&quot;Departure&quot;,&quot;Year&quot;,&quot;Day&quot;)])</code></pre>
 <pre><code>## Departure      Year       Day 
 ## 1.2471880 0.9886608 1.0282109</code></pre>
-<p>Since everything about my initial training model checked out, I then used the training model to predict precipitation values in the testing dataset.</p>
+<p>Since everything about my initial training model checked out, I then
+used the training model to predict precipitation values in the testing
+dataset.</p>
 <pre class="r"><code>logitpred1 &lt;- predict(logitm1, testing, type = &#39;response&#39;)
 summary(logitpred1)</code></pre>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## 0.009712 0.405948 0.618488 0.576120 0.761160 0.967987</code></pre>
-<p>The logistic regression model had a predictive accuracy of <strong>77.06%</strong>.</p>
+<p>The logistic regression model had a predictive accuracy of
+<strong>77.06%</strong>.</p>
 <pre><code>## [1] 0.7705628</code></pre>
 </div>
 <div id="naïve-bayes" class="section level3">
 <h3>Naïve Bayes</h3>
-<p>Another method used in classification problems is Naïve Bayes, which can be used when the response variable has 2 or more categories. Here, I used Naïve Bayes to estimate the probability of precipitation and compared the predictive accuracy to that of the logistic regression model using the same testing and training datasets.</p>
+<p>Another method used in classification problems is Naïve Bayes, which
+can be used when the response variable has 2 or more categories. Here, I
+used Naïve Bayes to estimate the probability of precipitation and
+compared the predictive accuracy to that of the logistic regression
+model using the same testing and training datasets.</p>
 <pre class="r"><code>bayes.mod1 &lt;- naiveBayes(PrecipB ~ Day + Year + Departure,
                          data = training.adj, laplace = 1)</code></pre>
-<p>As shown below, the predictive accuracy for the Naïve Bayes model was <strong>78.35%</strong> - slightly above the predictive accuracy of the logistic regression model.</p>
+<p>As shown below, the predictive accuracy for the Naïve Bayes model was
+<strong>78.35%</strong> - slightly above the predictive accuracy of the
+logistic regression model.</p>
 <pre class="r"><code>bayes.pred1 &lt;- predict(bayes.mod1, testing, type = &quot;class&quot;)
 bayes.pred1.table &lt;- table(testing$PrecipB, bayes.pred1)
 bayes.pred1.table</code></pre>
@@ -440,13 +487,26 @@ bayes.pred1.table</code></pre>
 </div>
 <div id="k-nearest-neighbors" class="section level3">
 <h3><em>k</em>-Nearest Neighbors</h3>
-<p>After running the logistic regression and Naïve Bayes models, I also compared the predictive accuracy of both of these methods to <em>k</em>-Nearest Neighbors. Since <em>k</em>-Nearest Neighbors uses Euclidean Distance to generate classification predictions, the variables in the “model” needed to be normalized, which I did by z-scoring all predictor variables. I also used a variety of k-values to determine the effects on predictive accuracy, as shown below. Overall, the predictive accuracy was extremely high (ranging from 95.24% to 99.57% depending on the specified k-value). <img src="ProjectB_files/figure-html/unnamed-chunk-16-1.png" width="384" style="display: block; margin: auto auto auto 0;" /></p>
+<p>After running the logistic regression and Naïve Bayes models, I also
+compared the predictive accuracy of both of these methods to
+<em>k</em>-Nearest Neighbors. Since <em>k</em>-Nearest Neighbors uses
+Euclidean Distance to generate classification predictions, the variables
+in the “model” needed to be normalized, which I did by z-scoring all
+predictor variables. I also used a variety of k-values to determine the
+effects on predictive accuracy, as shown below. Overall, the predictive
+accuracy was extremely high (ranging from 95.24% to 99.57% depending on
+the specified k-value).
+<img src="ProjectB_files/figure-html/unnamed-chunk-16-1.png" width="384" style="display: block; margin: auto auto auto 0;" /></p>
 </div>
 <div id="conclusion" class="section level3">
 <h3>Conclusion</h3>
-<p>By comparing logistic regression, Naïve Bayes, and <em>k</em>-Nearest Neighbors, it’s clear that <em>k</em>-Nearest Neighbors provides the best predictions on whether or not it will precipitate in Seattle on any given day in December. This is likely influenced by the relatively small sample size and low dimensionality of this particular dataset, which allows for fast computation using this lazy-learning method.</p>
+<p>By comparing logistic regression, Naïve Bayes, and <em>k</em>-Nearest
+Neighbors, it’s clear that <em>k</em>-Nearest Neighbors provides the
+best predictions on whether or not it will precipitate in Seattle on any
+given day in December. This is likely influenced by the relatively small
+sample size and low dimensionality of this particular dataset, which
+allows for fast computation using this lazy-learning method.</p>
 <p><img src="rain2.jpeg" style="width:75.0%" /></p>
-</div>
 </div>
 
 
