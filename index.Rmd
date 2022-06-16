@@ -12,13 +12,13 @@ library(xfun)
 
 ### Hi, I'm Carmen and I'm a quantitative research scientist
 <img align="right" width="200" hspace = "10" src=face.jpg>
-<font size="4"> I hold a BS in Biology, a PhD in Physical & Biological Anthropology, and have over 7 years of experience conducting end-to-end research on human health and disease (with an emphasis on reproductive health and immunology). I have demonstrated expertise in advanced statistics, cross-population study design, and bioanalytics. Check out the tabs above to see examples of my work.
+<font size="4"> I have a BS in Biology, a PhD in Physical & Biological Anthropology, and over 7 years of experience conducting end-to-end research on human health and disease (with an emphasis on reproductive health and immunology). I have demonstrated expertise in [statistics](Statistics.html){target="_blank"}, [study design and execution](Projects.html){target="_blank"}, and [bioanalytics](Bioanalytics.html){target="_blank"}. Check out the tabs above to see examples of my work.
 
-On weekends, I can usually be found hiking in the Cascades, sewing quilts, climbing, or buried in a good book. 
+On weekends, I can usually be found hiking in the Cascades, sewing quilts, climbing, or with my nose buried in a good book. 
 
 ### Contact
 Email: hove.cm@gmail.com | 
-[LinkedIn](https://www.linkedin.com/in/carmenhove/) | [Github](https://github.com/carmenhove) | [Twitter](https://twitter.com/CarmenHove)
+[LinkedIn](https://www.linkedin.com/in/carmenhove/){target="_blank"} | [Github](https://github.com/carmenhove) | [Twitter](https://twitter.com/CarmenHove){target="_blank"}
 </font size="4">
 
 ![](editedliver.jpg){width=100%}

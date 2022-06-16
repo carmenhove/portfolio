@@ -249,7 +249,7 @@ $(document).ready(function () {
   <a href="index.html">About Me</a>
 </li>
 <li>
-  <a href="Projects.html">Projects</a>
+  <a href="Studies.html">Studies</a>
 </li>
 <li>
   <a href="Statistics.html">Statistics/ML</a>
@@ -285,52 +285,100 @@ class="section level3">
 <h3>Bayesian hierarchical nonlinear regression</h3>
 <p><font size="4"></p>
 <ol style="list-style-type: decimal">
-<li><p>Manuscript in prep for PNAS. I combined data from regularly
-cycling, pregnant, and postpartum Tsimane and USA women to determine the
-association between different reproductive phases and degree of change
-from “baseline”.<br /> <img src="Rplot.jpeg"
-style="width:50.0%" /></p></li>
-<li><p>Manuscript in prep for Science. I utilized Bayesian nonlinear
+<li><p><strong>Do postpartum women exhibit unique immune profiles? If
+so, how does maternal immune status in the postpartum period compare to
+markers of immune function during pregnancy?</strong> <br /> For this
+project, I combined immunological data from regularly cycling, pregnant,
+and postpartum <a href="https://en.wikipedia.org/wiki/Tsiman%C3%A9"
+target="_blank">Tsimane</a> and USA women and modelled the effects of
+month of pregnancy and month since delivery on leukocyte differential,
+C-reactive protein concentration, and neutrophil-to-lymphocyte ratio.
+Below is a graph showing estimated median white blood cell count (and
+95% credible intervals) by month of pregnancy and month since delivery
+among Tsimane and USA women. Banded lines indicate population-specific
+cycling baseline values. <font size="3"><em>Manuscript in prep.</em>
+<br /> <img src="Rplot.jpeg" style="width:50.0%" /></p></li>
+<li><p><font size="4"> <strong>Does the degree of sexual dimorphism in
+immune function vary across populations as a function of divergent
+ecological conditions (e.g., pathogen burden, reduced energetic
+reserves)?</strong> <br /> For this paper, I utilized data from the <a
+href="https://tsimane.anth.ucsb.edu/" target="_blank">Tsimane Health and
+Life History Project</a> and <a
+href="https://www.cdc.gov/nchs/nhanes/index.htm"
+target="_blank">NHANES</a> and Bayesian nonlinear hierarchical
 regression models to estimate the population-specific effects of age on
-immune function, stratified by sex and female reproductive phase. <br />
-<img src="SexDif.png" style="width:50.0%" /></p></li>
-<li><p>A for-fun <a href="ProjectA.html" target="_blank">side
-project</a>, where I estimate the non-linear sex-specific effects of age
-on estradiol and testosterone levels and compare model outputs using
-brms versus mgcv packages. <br /> <img src="plotpa.png"
-style="width:75.0%" /></p></li>
+immune function, stratified by sex and female reproductive phase. Below
+is a graph showing estimated median natural-logged white blood cell
+count (and 95% credible intervals) by age, sex, and female reproductive
+phase among individuals in the USA. <font size="3"> <em>Manuscript in
+prep.</em> <br /></p></li>
+</ol>
+<p><img src="SexDif.png" style="width:50.0%" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li><font size="4"> <strong>How do predicted values vary between models
+specified using brms versus mgcv?</strong> <br /> This was a fun side
+project, where I modeled the non-linear sex-specific effects of age on
+estradiol and testosterone levels using <a
+href="https://cran.r-project.org/web/packages/brms/index.html"
+target="_blank">brms</a> and <a
+href="https://cran.r-project.org/web/packages/mgcv/index.html"
+target="_blank">mgcv</a> packages and compared the predicted values.
+Below is a plot showing the mgcv predicted median values and 95%
+credible intervals for estradiol and testosterone among males and
+females by age. Click <a href="ProjectA.html" target="_blank">here</a>
+for the corresponding write-up and R code. <br /> <img src="plotpa.png"
+style="width:55.0%" /></li>
 </ol>
 </div>
 <div id="bayesian-hierarchical-linear-regression"
 class="section level3">
 <h3>Bayesian hierarchical linear regression</h3>
-<p>I utilized fully Bayesian hierarchical regression models to estimate
-and comparing the effects of trimester of pregnancy on immune status
-among Tsimane and USA women. Results published in <a
+<ol style="list-style-type: decimal">
+<li><font size="4"> <strong>Do peripheral markers of fetal tolerance
+vary across populations experiencing different environmental
+conditions?</strong> <br /> For this paper, I utilized fully Bayesian
+hierarchical regression models to estimate and comparing the effects of
+trimester of pregnancy on immune status among Tsimane and USA women.
+Figure below shows the predicted percentage of each leukocyte subset
+among cycling (C) and first (T1), second (T2), and third (T3) trimester
+Tsimane and USA women. <font size="3"> <em>Results published in <a
 href="https://academic.oup.com/emph/article/2020/1/114/5866980"
-target="_blank">Immune function during pregnancy varies between
-ecologically dinstinct populations</a>. <br /> <img src="Figure2.jpg"
-style="width:55.0%" /></p>
+target="_blank">here</a></em>. <br /> <br /> <img src="Figure2.jpg"
+style="width:55.0%" /></li>
+</ol>
 </div>
-<div id="classification-using-bayesian-binomial-modeling"
-class="section level3">
-<h3>Classification using Bayesian binomial modeling</h3>
-<p>During summer 2021, I worked with my <a
+<div id="modelling-probability" class="section level3">
+<h3>Modelling probability</h3>
+<ol style="list-style-type: decimal">
+<li><font size="4"> <strong>Does sex bias in COVID-19 mortality differ
+between high-income and low-income countries?</strong> <br /> During
+summer 2021, I worked with my <a
 href="https://summer.ucsb.edu/programs/research-mentorship-program/overview"
-target="_blank">Research Mentorship Program</a> student Delaney
-Nordstrom to pull publically available data from the <a
+target="_blank">Research Mentorship Program</a> student Delaney Nystrom
+to pull publicly available data from the <a
 href="https://globalhealth5050.org/the-sex-gender-and-covid-19-project/"
 target="_blank">Sex, Gender and COVID-19 project</a> to determine if/how
-sex bias in COVID-19 mortality vared by country using Bayesian binomial
-models. <br /> <img src="RMP.png" style="width:45.0%" /></p>
+sex bias in COVID-19 mortality varied by country using binomial
+classification models. Below is a graph showing predicted probability of
+male (versus female) death due to COVID-19 in four high-income countries
+(Australia, Spain, Sweden, Switzerland) and three low-income countries
+(Kenya, Nigeria, Zimbabwe). <br /> <img src="RMP.png"
+style="width:45.0%" /></li>
+</ol>
 </div>
-<div id="logistic-regression-classification-using-ml"
+<div id="classification-using-machine-learning-algorithms"
 class="section level3">
-<h3>Logistic regression &amp; Classification using ML</h3>
-<p><font size="4"> A for-fun <a href="ProjectB.html"
-target="_blank">machine learning project</a> using logistic regression,
-Naïve Bayes, and <em>k</em>-Nearest neighbors to predict precipitation
-in Seattle. <br /> <img src="kneighbors.png" style="width:40.0%" /></p>
+<h3>Classification using Machine Learning algorithms</h3>
+<ol style="list-style-type: decimal">
+<li><font size="4"> <strong>How well do different ML algorithms predict
+precipitation in Seattle, WA (my hometown)?</strong> <br /> This was a
+for-fun side project, where I used logistic regression, Naïve Bayes, and
+<em>k</em>-Nearest neighbors to predict precipitation in Seattle. Please
+click <a href="ProjectB.html" target="_blank">here</a> for full write-up
+and R code. Plot below shows the predictive accuracy of my
+<em>k</em>-Nearest neighbors model by specified K-value. <br /> <img
+src="kneighbors.png" style="width:40.0%" /></li>
+</ol>
 </div>
 
 
