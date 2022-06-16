@@ -1,23 +1,22 @@
 ---
-title: "Project A"
+title: "Bayesian nonlinear regression"
 output: html_document
 ---
 ```{r , include=FALSE}
 load("Portfolio.RData")
 inst = lapply(pkgs, library, character.only = TRUE) 
 ```
-## How does age affect hormone production?
 
-<font size="5"> Estimating the non-linear sex-specific effects of age on estradiol and testosterone levels using [brms](https://cran.r-project.org/web/packages/brms/index.html) and [mgcv](https://cran.r-project.org/web/packages/mgcv/index.html) packages </font size="5">
+<font size="5"> Estimating the non-linear sex-specific effects of age on estradiol and testosterone levels using [brms](https://cran.r-project.org/web/packages/brms/index.html){target="_blank"} and [mgcv](https://cran.r-project.org/web/packages/mgcv/index.html){target="_blank"} packages </font size="5">
 
-![](hormones2.jpeg){width=75%}
+![](hormones2.jpeg){width=50%}
 
-<font size="4"> I came up with the idea for this fun side project while serving as a mentor for the [UCSB research mentorship program](https://summer.ucsb.edu/programs/research-mentorship-program/overview). After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is *only* produced by females and testosterone is *only* found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4">
+<font size="4"> I came up with the idea for this fun side project while serving as a mentor for the [UCSB research mentorship program](https://summer.ucsb.edu/programs/research-mentorship-program/overview){target="_blank"}. After chatting with my students about the biological relevance of the questions we were working on, I realized that some students were under the impression that estradiol is *only* produced by females and testosterone is *only* found in males. In addition to showing sex-specific production of both hormones, I also wanted to develop models showcasing how hormone production can vary across the entire lifespan. </font size="4">
 
 ### Data importing and cleaning
-<font size="4"> The complete **R code** for this project lives [here](https://github.com/carmenhove/portfolio/blob/main/ProjectA.R). </font size="4">
+<font size="4"> The complete **R code** for this project lives [here](https://github.com/carmenhove/portfolio/blob/main/ProjectA.R){target="_blank"}. </font size="4">
 
-<font size="3"> I utilized publicly available data collected by the [National Health and Nutrition Examination Survey (NHANES)](https://www.cdc.gov/nchs/nhanes/about_nhanes.htm). By searching through variable names in the [NHANES codebook](https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx), I found that both testosterone and estradiol were measured in males and females ages 6 and up during [2013-2014](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm) and [2015-2016](https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm) collection cycles. I also imported corresponding [demographic](https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm), [BMI](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm) and [health data](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm) and merged by SEQN (participant identification number). <font size="3">
+<font size="3"> I utilized publicly available data collected by the [National Health and Nutrition Examination Survey (NHANES)](https://www.cdc.gov/nchs/nhanes/about_nhanes.htm){target="_blank"}. By searching through variable names in the [NHANES codebook](https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx){target="_blank"}, I found that both testosterone and estradiol were measured in males and females ages 6 and up during [2013-2014](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm){target="_blank"} and [2015-2016](https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm){target="_blank"} collection cycles. I also imported corresponding [demographic](https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm), [BMI](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm){target="_blank"} and [health data](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm){target="_blank"} and merged by SEQN (participant identification number). <font size="3">
 
 ```{r}
 str(PAdf1)
@@ -40,7 +39,7 @@ A quick check indicated that there were **no** zero-values for estradiol or test
 sum(PAdf2$Value==0,na.rm = T)
 ```
 
-A closer evaluation of the [NHANES data file](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm) (screengrab below) indicated that these non-zero but lower-than-expected values were **imputed values** generated for individuals who had assay results below the limit of detection.
+A closer evaluation of the [NHANES data file](https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm){target="_blank"} (screengrab below) indicated that these non-zero but lower-than-expected values were **imputed values** generated for individuals who had assay results below the limit of detection.
 
 ![](Imputed values.png){width=65%}
 
@@ -100,7 +99,7 @@ ggplot(gam.predvals, aes(x = Age, y = lnValue,
 ```
 
 ### Bayesian nonlinear regression using brms
-I also ran the same models using [brms](https://cran.r-project.org/web/packages/brms/vignettes/brms_overview.pdf) in order to compare predicted values between frequentist and Bayesian nonlinear regression models. 
+I also ran the same models using [brms](https://cran.r-project.org/web/packages/brms/vignettes/brms_overview.pdf){target="_blank"} in order to compare predicted values between frequentist and Bayesian nonlinear regression models. 
 When evaluating a Bayesian model, two components need to be checked: the simulation (Markov chain Monte Carlo, in the case of brms models) and the posterior fit. To this end, I checked the Rhat values and caterpillar plots for each model to make sure the chains converged. As with the gam models above, I used the "Testosterone.Male" model to exemplify the process of checking simulation convergence and posterior fit. 
 
 #### Checking the simulation

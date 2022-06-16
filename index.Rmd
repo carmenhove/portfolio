@@ -9,16 +9,12 @@ library("xfun")
 library(xfun)
 ```
 
-<img align="right" width="270" height="270" hspace = "10" src=face.jpg>
 
 ### Hi, I'm Carmen and I'm a quantitative research scientist
-<font size="4"> I hold a BS in biology, a PhD in Physical & Biological Anthropology, and have over 7 years of end-to-end research experience.  
+<img align="right" width="200" hspace = "10" src=face.jpg>
+<font size="4"> I hold a BS in Biology, a PhD in Physical & Biological Anthropology, and have over 7 years of experience conducting end-to-end research on human health and disease. I have demonstrated expertise in [advanced statistics](Statistics.html){target="_blank"}, [cross-population study design and execution](Projects.html){target="_blank"}, and [bioanalytics](Bioanalytics.html){target="_blank"}. 
 
-### CV / Resume
-
-```{r}
-xfun::embed_file("Hove_Application.pdf")
-```
+Outside of work, I can usually be found hiking in the Cascades, sewing quilts, climbing, or buried in a good book. 
 
 ### Contact
 Email: hove.cm@gmail.com | 

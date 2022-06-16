@@ -13,9 +13,9 @@ inst = lapply(pkgs, library, character.only = TRUE)
 ![](SeattleSkyline.jpeg){width=75%}
 
 ### Data importing and cleaning
-<font size="4"> The complete **R code** for this project lives [here](https://github.com/carmenhove/portfolio/blob/main/ProjectB.R). </font size="4">
+<font size="4"> The complete **R code** for this project lives [here](https://github.com/carmenhove/portfolio/blob/main/ProjectB.R){target="_blank"}. </font size="4">
 
-<font size="3"> I used weather data collected by [National Weather Service](https://w1.weather.gov/climate/xmacis.php?wfo=sew) for every December day in Seattle from 1990 to 2021. These data included date, max/min/average temperature, average temperature departure from "normal" (departure), heating degree days (HDD), cooling degree days (CDD), and inches precipitation.
+<font size="3"> I used weather data collected by [National Weather Service](https://w1.weather.gov/climate/xmacis.php?wfo=sew){target="_blank"} for every December day in Seattle from 1990 to 2021. These data included date, max/min/average temperature, average temperature departure from "normal" (departure), heating degree days (HDD), cooling degree days (CDD), and inches precipitation.
 
 ```{r}
 str(PBdf1)

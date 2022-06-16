@@ -11,7 +11,7 @@
 
 
 
-<title>Project A</title>
+<title>Bayesian nonlinear regression</title>
 
 <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -249,7 +249,10 @@ $(document).ready(function () {
   <a href="index.html">About Me</a>
 </li>
 <li>
-  <a href="Biostatistics.html">Biostatistics/ML</a>
+  <a href="Projects.html">Projects</a>
+</li>
+<li>
+  <a href="Statistics.html">Statistics/ML</a>
 </li>
 <li>
   <a href="Bioanalytics.html">Bioanalytics</a>
@@ -258,7 +261,7 @@ $(document).ready(function () {
   <a href="Publications.html">Publications</a>
 </li>
 <li>
-  <a href="CVResume.html">CV/Resume</a>
+  <a href="CV.html">CV</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -272,53 +275,53 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Project A</h1>
+<h1 class="title toc-ignore">Bayesian nonlinear regression</h1>
 
 </div>
 
 
-<div id="how-does-age-affect-hormone-production" class="section level2">
-<h2>How does age affect hormone production?</h2>
 <p><font size="5"> Estimating the non-linear sex-specific effects of age
 on estradiol and testosterone levels using <a
-href="https://cran.r-project.org/web/packages/brms/index.html">brms</a>
-and <a
-href="https://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a>
-packages </font size="5"></p>
-<p><img src="hormones2.jpeg" style="width:75.0%" /></p>
+href="https://cran.r-project.org/web/packages/brms/index.html"
+target="_blank">brms</a> and <a
+href="https://cran.r-project.org/web/packages/mgcv/index.html"
+target="_blank">mgcv</a> packages </font size="5"></p>
+<p><img src="hormones2.jpeg" style="width:50.0%" /></p>
 <p><font size="4"> I came up with the idea for this fun side project
 while serving as a mentor for the <a
-href="https://summer.ucsb.edu/programs/research-mentorship-program/overview">UCSB
-research mentorship program</a>. After chatting with my students about
-the biological relevance of the questions we were working on, I realized
-that some students were under the impression that estradiol is
-<em>only</em> produced by females and testosterone is <em>only</em>
-found in males. In addition to showing sex-specific production of both
-hormones, I also wanted to develop models showcasing how hormone
-production can vary across the entire lifespan. </font size="4"></p>
+href="https://summer.ucsb.edu/programs/research-mentorship-program/overview"
+target="_blank">UCSB research mentorship program</a>. After chatting
+with my students about the biological relevance of the questions we were
+working on, I realized that some students were under the impression that
+estradiol is <em>only</em> produced by females and testosterone is
+<em>only</em> found in males. In addition to showing sex-specific
+production of both hormones, I also wanted to develop models showcasing
+how hormone production can vary across the entire lifespan.
+</font size="4"></p>
 <div id="data-importing-and-cleaning" class="section level3">
 <h3>Data importing and cleaning</h3>
 <p><font size="4"> The complete <strong>R code</strong> for this project
 lives <a
-href="https://github.com/carmenhove/portfolio/blob/main/ProjectA.R">here</a>.
-</font size="4"></p>
+href="https://github.com/carmenhove/portfolio/blob/main/ProjectA.R"
+target="_blank">here</a>. </font size="4"></p>
 <p><font size="3"> I utilized publicly available data collected by the
-<a href="https://www.cdc.gov/nchs/nhanes/about_nhanes.htm">National
-Health and Nutrition Examination Survey (NHANES)</a>. By searching
-through variable names in the <a
-href="https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx">NHANES
-codebook</a>, I found that both testosterone and estradiol were measured
-in males and females ages 6 and up during <a
-href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">2013-2014</a>
-and <a
-href="https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm">2015-2016</a>
-collection cycles. I also imported corresponding <a
+<a href="https://www.cdc.gov/nchs/nhanes/about_nhanes.htm"
+target="_blank">National Health and Nutrition Examination Survey
+(NHANES)</a>. By searching through variable names in the <a
+href="https://wwwn.cdc.gov/nchs/nhanes/search/default.aspx"
+target="_blank">NHANES codebook</a>, I found that both testosterone and
+estradiol were measured in males and females ages 6 and up during <a
+href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm"
+target="_blank">2013-2014</a> and <a
+href="https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/TST_I.htm"
+target="_blank">2015-2016</a> collection cycles. I also imported
+corresponding <a
 href="https://wwwn.cdc.gov/nchs/nhanes/2013-2014/demo_h.htm">demographic</a>,
-<a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm">BMI</a>
-and <a
-href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm">health
-data</a> and merged by SEQN (participant identification number).
-<font size="3"></p>
+<a href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/BMX_H.htm"
+target="_blank">BMI</a> and <a
+href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/RHQ_H.htm"
+target="_blank">health data</a> and merged by SEQN (participant
+identification number). <font size="3"></p>
 <pre class="r"><code>str(PAdf1)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    13144 obs. of  10 variables:
 ##  $ Testosterone: num  355.03 175.45 447 2.51 206.57 ...
@@ -343,11 +346,11 @@ zero-values for estradiol or testosterone.</p>
 <pre class="r"><code>sum(PAdf2$Value==0,na.rm = T)</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>A closer evaluation of the <a
-href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm">NHANES data
-file</a> (screengrab below) indicated that these non-zero but
-lower-than-expected values were <strong>imputed values</strong>
-generated for individuals who had assay results below the limit of
-detection.</p>
+href="https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/TST_H.htm"
+target="_blank">NHANES data file</a> (screengrab below) indicated that
+these non-zero but lower-than-expected values were <strong>imputed
+values</strong> generated for individuals who had assay results below
+the limit of detection.</p>
 <p><img src="Imputed%20values.png" style="width:65.0%" /></p>
 <p>Since these imputed values reflect limits of assay sensitivity rather
 than biological reality, I removed them from the dataset and then
@@ -404,15 +407,15 @@ hormone production.
 class="section level3">
 <h3>Bayesian nonlinear regression using brms</h3>
 <p>I also ran the same models using <a
-href="https://cran.r-project.org/web/packages/brms/vignettes/brms_overview.pdf">brms</a>
-in order to compare predicted values between frequentist and Bayesian
-nonlinear regression models. When evaluating a Bayesian model, two
-components need to be checked: the simulation (Markov chain Monte Carlo,
-in the case of brms models) and the posterior fit. To this end, I
-checked the Rhat values and caterpillar plots for each model to make
-sure the chains converged. As with the gam models above, I used the
-“Testosterone.Male” model to exemplify the process of checking
-simulation convergence and posterior fit.</p>
+href="https://cran.r-project.org/web/packages/brms/vignettes/brms_overview.pdf"
+target="_blank">brms</a> in order to compare predicted values between
+frequentist and Bayesian nonlinear regression models. When evaluating a
+Bayesian model, two components need to be checked: the simulation
+(Markov chain Monte Carlo, in the case of brms models) and the posterior
+fit. To this end, I checked the Rhat values and caterpillar plots for
+each model to make sure the chains converged. As with the gam models
+above, I used the “Testosterone.Male” model to exemplify the process of
+checking simulation convergence and posterior fit.</p>
 <div id="checking-the-simulation" class="section level4">
 <h4>Checking the simulation</h4>
 <p>All Rhat values equal 1, indicating proper chain convergence. <em>The
@@ -465,7 +468,6 @@ from the data (y rep), indicating good posterior fit.</p>
 median BMI.
 <img src="ProjectA_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto auto auto 0;" /></p>
 <p></font size="3"></p>
-</div>
 </div>
 </div>
 

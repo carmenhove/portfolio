@@ -1,5 +1,5 @@
 ---
-title: "CV / Resume"
+title: "Curriculum Vitae"
 output: html_document
 ---
 
@@ -9,9 +9,8 @@ library("xfun")
 library(xfun)
 ```
 
-### Click on the links below to access my CV and Resume
-
+<font size="4">
 ```{r}
-xfun::embed_file("Hove_Application.pdf")
+xfun::embed_file("Hove_Vitae.pdf")
 ```
 
