@@ -7,6 +7,6 @@ output: html_document
 
 Current projects involve developing standardization methods for running bioanalytic assays (e.g., single and multiplex ELISAs) on hemaspot dried blood spot samples, running validation assays for various in-house assays (e.g., C-reactive protein) and processing, extracting, and running Cortisol assays on hair samples. 
 
-![](Hemaspots.jpg){width=33%} ![](blue.jpg){width=33%}![](Saliva.jpg){width=33%}
+![](pic.png){width=100%}
 
 
