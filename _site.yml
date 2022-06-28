@@ -12,6 +12,4 @@ navbar:
       href: Bioanalytics.html
     - text: "Publications" #Page 4
       href: Publications.html
-    - text: "CV" #Page 5
-      href: CV.html
 output_dir: "docs"

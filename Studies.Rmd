@@ -11,15 +11,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <img align="right" width="350" hspace = "20" src=clipart_FB.jpg>
 
-<font size="4"> As co-principal investigator of the Seattle Postpartum Health Study, I was directly responsible for every aspect of the project, including the following: <br /> <font size="3">
+<font size="4"> As co-principal investigator of the [Seattle Postpartum Health Study](https://momshealth.anth.ucsb.edu/){target="_blank"}, I was directly responsible for every aspect of the project, including the following: <br /> <font size="3">
 
-1. Study design <br />
+1. Study design (surveys / questionnaires, etc.) <br />
 2. Grant writing (funded by [NSF](https://www.nsf.gov/pubs/2005/nsf05607/nsf05607.htm){target="_blank"} and [Wenner-Gren Foundation](http://www.wennergren.org/programs/dissertation-fieldwork-grants){target="_blank"}) <br />
 3. IRB approval <br />
 4. Informed consent <br />
 5. Data management plan <br />
 6. Participant recruitment <br />
-7. Data collection (including biospecimens) <br />
+7. Data collection <br />
 8. Research personnel management <br />
 9. Wet lab work <br />
 10. Data analysis and manuscript preparation ([in prep](Statistics.html){target="_blank"}) <br />
@@ -28,10 +28,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <img align="right" width="200" hspace = "20" src=Picture2.jpg>
 
-<font size="4"> As a graduate researcher for the Tsimane Health and Life History Project, I utilized pre-existing data to conduct a series of computational studies looking at how ecological conditions (e.g., parasite burden) drive population-level differences in immune function across reproductive states (e.g., pregnancy). This involved: <br /> <font size="3">
+<font size="4"> As a graduate researcher for the [Tsimane Health and Life History Project](https://tsimane.anth.ucsb.edu/){target="_blank"}, I utilized pre-existing data to conduct a series of computational studies looking at how socio-ecological conditions (e.g., fertility schedules, parasite burden) drive population-level differences in immune function across reproductive states (e.g., pregnancy). This involved: <br /> <font size="3">
 
 1. Study design <br />
-2. Grant writing (funding by the [NSF](https://www.nsfgrfp.org/){target="_blank"}) <br />
+2. Grant writing (funding by the [NSF GRFP](https://www.nsfgrfp.org/){target="_blank"}) <br />
 3. Extensive data wrangling / cleaning <br />
 4. Data analysis <br />
 5. Manuscript preparation (see [Publications](Publications.html){target="_blank"}, [Statistics](Statistics.html){target="_blank"}) <br />
@@ -40,29 +40,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <img align="right" width="200" hspace = "20" src=Incline.jpg>
 
-<font size="4"> As a Post Baccalaureate Research Fellow, I worked with [Dr Cara Wall-Scheffler](https://wallscheffler.wordpress.com/){target="_blank"} to collect energetic and thermoregulation data for  a study investigating the sex-specific effects of terrain on optimal walking speed and cost of transport (results published [here](https://academic.oup.com/icb/article/55/6/1155/2363610){target="_blank"}). My responsibilities included: <br /> <font size="3">
+<font size="4"> As a Post Baccalaureate Research Fellow, I worked with [Dr Cara Wall-Scheffler](https://wallscheffler.wordpress.com/){target="_blank"} to collect behavioral, energetic, and thermoregulation data for a study investigating how well men and women are able to choose a preferred speed compared to optimal cost of transport (results published [here](https://academic.oup.com/icb/article/55/6/1155/2363610){target="_blank"}). My responsibilities included: <br /> <font size="3">
 
 1. Participant recruitment <br />
 2. Data collection <br />
 3. Dissemination of results
 
-### Women's Health Initiative Clinical Study
-
-<img align="right" width="200" hspace = "20" src=WHI.jpg>
-
-<font size="4"> As a data technician for the Women's Health Initiative at [Fred Hutchinson Cancer Research Institute](https://www.fredhutch.org/en.html){target="_blank"}, I was responsible for:<br /> <font size="3">
-
-1. Participant retention/follow-up
-2. Coordination of research personnel conference calls
-3. Data cleaning/QC
-
 ### Humor and Gender Study
 
 <img align="right" width="200" hspace = "20" src=humor.png>
 
-<font size="4"> As an undergraduate researcher, this was my first experience conducting research. Under the mentorship of [Dr Cara Wall-Scheffler](https://wallscheffler.wordpress.com/){target="_blank"}, I designed and executed a study investigating how comedian gender impacts audience response to jokes. My responsibilities included:<br /> <font size="3">
+<font size="4"> As an undergraduate researcher, I designed and executed a study investigating how comedian gender impacts audience response to jokes. My responsibilities included:<br /> <font size="3">
 
-1. Study design
+1. Study design (questionnaires / surveys, videography, etc)
 2. IRB approval (study included deception, thus requiring a full in-person committee review)
 3. Participant recruitment (final n=89)
 4. Data collection

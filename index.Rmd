@@ -10,15 +10,15 @@ library(xfun)
 ```
 
 
-### Hi, I'm Carmen and I'm a quantitative research scientist
+### Hi, I'm Carmen and I'm a research scientist
 <img align="right" width="200" hspace = "10" src=face.jpg>
-<font size="4"> I have a BS in Biology, a PhD in Physical & Biological Anthropology, and over 7 years of experience conducting end-to-end research on human health and disease (with an emphasis on reproductive health and immunology). I have demonstrated expertise in [statistics](Statistics.html){target="_blank"}, [study design and execution](Projects.html){target="_blank"}, and [bioanalytics](Bioanalytics.html){target="_blank"}. Check out the tabs above to see examples of my work.
+<font size="4"> I have a BS in Human Biology, a PhD in Physical & Biological Anthropology, and over 8 years of experience conducting biobehavioral research. I have demonstrated expertise in [study design and execution](Studies.html){target="_blank"}, [mixed-methods research](Studies.html){target="_blank"}, [statistics](Statistics.html){target="_blank"}, and [bioanalytics](Bioanalytics.html){target="_blank"}.
 
-On weekends, I can usually be found hiking in the Cascades, sewing quilts, climbing, or with my nose buried in a good book. 
+On weekends, I can usually be found hiking in the Cascades, sewing quilts, rock climbing, or with my nose buried in a good book. 
 
 ### Contact
 Email: hove.cm@gmail.com | 
-[LinkedIn](https://www.linkedin.com/in/carmenhove/){target="_blank"} | [Github](https://github.com/carmenhove) | [Twitter](https://twitter.com/CarmenHove){target="_blank"}
+[LinkedIn](https://www.linkedin.com/in/carmenhove/){target="_blank"} | [Github](https://github.com/carmenhove){target="_blank"} | [Twitter](https://twitter.com/CarmenHove){target="_blank"}
 </font size="4">
 
 ![](editedliver.jpg){width=100%}

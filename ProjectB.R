@@ -1,5 +1,23 @@
 
 #PROJECT B
+install.packages("visreg")
+library(visreg)
+#PROJECT A
+
+#Identify packages 
+pkgs = c("nhanesA",#"tidyverse",
+         "magrittr","knitr",
+         "patchwork","ggpubr","scales",#"brms",
+         "mgcv",
+         "sjlabelled","schoenberg","tidymv","broom",
+         "broom.mixed","tidybayes","calecopal","smotefamily",
+         "corrplot","car","e1071","InformationValue","class","caret")
+
+#Install packages
+install.packages(pkgs)
+
+#Load packages
+inst = lapply(pkgs, library, character.only = TRUE) 
 
 #Upload data as a csv file
 PBdf1 <- read.csv("FullData.csv", stringsAsFactors = FALSE)
@@ -45,7 +63,7 @@ testing <- PBdf2[-sample_set,]
 #Compare class distribution for precipitation Y/N in testing and training datasets
 round(prop.table(table(select(PBdf2, PrecipB),exclude = NULL)),4)*100
 
-#Testing and training have similiar class distributions
+#Testing and training have similar class distributions
 round(prop.table(table(select(training, PrecipB),exclude = NULL)),4)*100
 round(prop.table(table(select(testing, PrecipB),exclude = NULL)),4)*100
 
@@ -100,7 +118,7 @@ normalize <- function(x){
 #Partition data into training and test datasets using a 75%:25% split ratio
 set.seed(1234)
 PBdf.knn <- PBdf2 %>% select(PrecipB, Departure, Day, Year) %>% 
-  mutate(across(c(Departure, Day, Year), normalize)
+  mutate(across(c(Departure, Day, Year), normalize))
 
 knn_sample_set <- sample(nrow(PBdf.knn),round(nrow(PBdf.knn)*0.75), replace = F)
 knn_training <- PBdf.knn[knn_sample_set,]
@@ -137,3 +155,97 @@ ggplot(knn.df, aes(x = Kvalue, y = Value))+
   ylab("Predictive accuracy")+
   xlab("K-value")
 
+#K fold cross validation
+set.seed(1234)
+sample_set <- createDataPartition(y = PBdf2$PrecipB,
+                                  p = 0.75,
+                                  list = F)
+kfold_train <- PBdf2[sample_set,]
+kfold_test <- PBdf2[-sample_set,]
+
+kfold_smote <- SMOTE(kfold_train, kfold_train$PrecipB)
+kfold_train.adj <- kfold_smote$data %>% select(-class) %>% 
+  mutate(PrecipB = as.factor(PrecipB))
+
+#K-fold cross validation
+
+##GLM
+kfoldfit.glm <- train(
+  form = PrecipB ~Departure + Day + Year,
+  data = kfold_train.adj,
+  trControl = trainControl(method = "cv",
+                           number = 5),
+  method = "glm",
+  family = "binomial"
+)
+
+kfoldfit.glm$resample %>% 
+  arrange(Resample) %>% 
+  summarise(AveAccuracy = mean(Accuracy))
+
+##NAive bayes
+kfoldfit.nb <- train(
+  form = PrecipB ~Departure + Day + Year,
+  data = kfold_train.adj,
+  trControl = trainControl(method = "cv",
+                           number = 5),
+  method = "naive_bayes")
+
+kfoldfit.nb$resample %>% 
+  arrange(Resample) %>% 
+  summarise(AveAccuracy = mean(Accuracy))
+
+
+##KNN
+kfoldfit.knn <- train(
+  form = PrecipB ~Departure + Day + Year,
+  data = kfold_train.adj,
+  trControl = trainControl(method = "cv",
+                           number = 5),
+  method = "knn")
+
+kfoldfit.knn$resample %>% 
+  arrange(Resample) %>% 
+  summarise(AveAccuracy = mean(Accuracy))
+
+##Leave One Out Cross-validation
+##GLM
+LOOCV.glm <- train(
+  form = PrecipB ~Departure + Day + Year,
+  data = kfold_train.adj,
+  trControl = trainControl(method = "LOOCV"),
+  method = "glm",
+  family = "binomial"
+)
+
+LOOCV.glm$results
+
+##Random cross-validation
+RCV.glm <- train(
+  form = PrecipB ~Departure + Day + Year,
+  data = kfold_train.adj,
+  trControl = trainControl(method = "LGOCV",
+                           p = 0.1,
+                           number = 10),
+  method = "glm",
+  family = "binomial"
+)
+
+RCV.glm$resample %>% 
+  arrange(Resample)
+
+#Bootstrap Sampling
+Bootstrap.glm <- train(
+  form = PrecipB ~Departure + Day + Year,
+  data = kfold_train.adj,
+  trControl = trainControl(method = "boot632",
+                           number  = 3),
+  method = "glm",
+  family = "binomial"
+)
+
+Bootstrap.glm$resample %>% 
+  arrange(Resample)
+
+##BEYOND PREDICTIVE ACCURACY
+Bootstrap.glm$

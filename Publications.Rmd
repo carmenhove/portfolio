@@ -2,9 +2,21 @@
 title: "Publications"
 output: html_document
 ---
-
-<font size="4"> [Immune function during pregnancy varies between ecologically dinstinct populations](https://academic.oup.com/emph/article/2020/1/114/5866980){target="_blank"} </font size="4"> <br/> <font size="3">*First author: study design, paper writing, all statistical analyses/figures/tables*</font size="3">
+### Papers
+<font size="4"> [Immune function during pregnancy varies between ecologically dinstinct populations](https://academic.oup.com/emph/article/2020/1/114/5866980){target="_blank"}. </font size="4"> <br/> <font size="3">*First author: study design, paper writing, all statistical analyses/figures/tables*</font size="3"> 
 
 <font size="4">[Old friends and friendly fire: Pregnancy, hookworm infection, and anemia among tropical horticulturalists](https://onlinelibrary.wiley.com/doi/abs/10.1002/ajhb.23337){target="_blank"} </font size="4"> <br/> <font size="3">*Third author: paper writing, editing, proofreading* </font size="3">
 
+### Select Abstracts
+<font size="3">	
+
+**Hove CM**, Trumble BC, Stieglitz J, Gurven M, Kaplan H, Boddy AM, Blackwell AD. 2019. Socioecological conditions shape postpartum immune trajectories. Journal of Human Biology Abstracts. 
+
+**Hove CM**, Wall-Scheffler CM. 2015. Comparing optimal and preferred walking speeds. American Journal of Physical Anthropology Suppl. 60:170. 
+
+**Hove CM**, Wagnild JM, Wall-Scheffler CM. 2014. The Humor gender gap: How gender and humor interact to influence social behavior. American Journal of Physical Anthropology Suppl. 58:145-6.
+
+Jones C, **Hove CM**, Wagnild JM, Wall-Scheffler CM. 2014. How travel time influences sexual dimorphism. American Journal of Physical Anthropology Suppl. 58:153.
+
 ![](Publications-Header.jpeg){width=90%}
+

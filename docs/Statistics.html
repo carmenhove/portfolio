@@ -260,9 +260,6 @@ $(document).ready(function () {
 <li>
   <a href="Publications.html">Publications</a>
 </li>
-<li>
-  <a href="CV.html">CV</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -280,30 +277,29 @@ $(document).ready(function () {
 </div>
 
 
-<div id="bayesian-hierarchical-nonlinear-regression"
-class="section level3">
-<h3>Bayesian hierarchical nonlinear regression</h3>
-<p><font size="4"></p>
-<ol style="list-style-type: decimal">
-<li><p><strong>Do postpartum women exhibit unique immune profiles? If
-so, how does maternal immune status in the postpartum period compare to
-markers of immune function during pregnancy?</strong> <br /> For this
-project, I combined immunological data from regularly cycling, pregnant,
-and postpartum <a href="https://en.wikipedia.org/wiki/Tsiman%C3%A9"
-target="_blank">Tsimane</a> and USA women and modelled the effects of
-month of pregnancy and month since delivery on leukocyte differential,
-C-reactive protein concentration, and neutrophil-to-lymphocyte ratio.
-Below is a graph showing estimated median white blood cell count (and
-95% credible intervals) by month of pregnancy and month since delivery
-among Tsimane and USA women. Banded lines indicate population-specific
-cycling baseline values. <font size="3"><em>Manuscript in prep.</em>
-<br /> <img src="Rplot.jpeg" style="width:50.0%" /></p></li>
-<li><p><font size="4"> <strong>Does the degree of sexual dimorphism in
+<p><font size="4"> <strong>Does breastfeeding behavior correspond to
+differences in perceived physical and mental wellbeing among postpartum
+women?</strong> <br /> <font size="3"> Using survey data I collected for
+the <a href="Studies.html" target="_blank">Seattle Postpartum Health
+Study</a>, I employed linear Bayesian regression models to estimate the
+association between infant feeding behavior (at-the-nipple
+breastfeeding, use of expressed/pumped breastmilk) and reported mental
+(EPDS score) and physical (PHQ) health. To parse out potential effects
+of time since delivery, I also ran separate models using early versus
+late postpartum as an interaction term (&lt;70 DSD = less than 70 days
+since delivery, &gt;70 DSD = more than days since delivery). Plot A
+shows that ATN breastfeeding is reliably associated with fewer symptoms
+of depression, while effects of pumping vary by time since delivery.
+Plot B shows that pumping is associated with more symptoms of physical
+illness, regardless of time since delivery.
+<font size="3"><em>Manuscript in prep.</em> <br /> <img
+src="EPDS_PHQ.png" style="width:60.0%" /></p>
+<p><font size="4"> <strong>Does the degree of sexual dimorphism in
 immune function vary across populations as a function of divergent
 ecological conditions (e.g., pathogen burden, reduced energetic
-reserves)?</strong> <br /> For this paper, I utilized data from the <a
-href="https://tsimane.anth.ucsb.edu/" target="_blank">Tsimane Health and
-Life History Project</a> and <a
+reserves)?</strong> <br /> <font size="3"> For this paper, I utilized
+data from the <a href="https://tsimane.anth.ucsb.edu/"
+target="_blank">Tsimane Health and Life History Project</a> and <a
 href="https://www.cdc.gov/nchs/nhanes/index.htm"
 target="_blank">NHANES</a> and Bayesian nonlinear hierarchical
 regression models to estimate the population-specific effects of age on
@@ -311,14 +307,12 @@ immune function, stratified by sex and female reproductive phase. Below
 is a graph showing estimated median natural-logged white blood cell
 count (and 95% credible intervals) by age, sex, and female reproductive
 phase among individuals in the USA. <font size="3"> <em>Manuscript in
-prep.</em> <br /></p></li>
-</ol>
+prep.</em> <br /></p>
 <p><img src="SexDif.png" style="width:50.0%" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li><font size="4"> <strong>How do predicted values vary between models
-specified using brms versus mgcv?</strong> <br /> This was a fun side
-project, where I modeled the non-linear sex-specific effects of age on
-estradiol and testosterone levels using <a
+<p><font size="4"> <strong>How do predicted values vary between models
+specified using brms versus mgcv?</strong> <br /> <font size="3"> This
+was a fun side project, where I modeled the non-linear sex-specific
+effects of age on estradiol and testosterone levels using <a
 href="https://cran.r-project.org/web/packages/brms/index.html"
 target="_blank">brms</a> and <a
 href="https://cran.r-project.org/web/packages/mgcv/index.html"
@@ -327,32 +321,10 @@ Below is a plot showing the mgcv predicted median values and 95%
 credible intervals for estradiol and testosterone among males and
 females by age. Click <a href="ProjectA.html" target="_blank">here</a>
 for the corresponding write-up and R code. <br /> <img src="plotpa.png"
-style="width:55.0%" /></li>
-</ol>
-</div>
-<div id="bayesian-hierarchical-linear-regression"
-class="section level3">
-<h3>Bayesian hierarchical linear regression</h3>
-<ol style="list-style-type: decimal">
-<li><font size="4"> <strong>Do peripheral markers of fetal tolerance
-vary across populations experiencing different environmental
-conditions?</strong> <br /> For this paper, I utilized fully Bayesian
-hierarchical regression models to estimate and comparing the effects of
-trimester of pregnancy on immune status among Tsimane and USA women.
-Figure below shows the predicted percentage of each leukocyte subset
-among cycling (C) and first (T1), second (T2), and third (T3) trimester
-Tsimane and USA women. <font size="3"> <em>Results published in <a
-href="https://academic.oup.com/emph/article/2020/1/114/5866980"
-target="_blank">here</a></em>. <br /> <br /> <img src="Figure2.jpg"
-style="width:55.0%" /></li>
-</ol>
-</div>
-<div id="modelling-probability" class="section level3">
-<h3>Modelling probability</h3>
-<ol style="list-style-type: decimal">
-<li><font size="4"> <strong>Does sex bias in COVID-19 mortality differ
-between high-income and low-income countries?</strong> <br /> During
-summer 2021, I worked with my <a
+style="width:55.0%" /></p>
+<p><font size="4"> <strong>Does sex bias in COVID-19 mortality differ
+between high-income and low-income countries?</strong> <br />
+<font size="3"> During summer 2021, I worked with my <a
 href="https://summer.ucsb.edu/programs/research-mentorship-program/overview"
 target="_blank">Research Mentorship Program</a> student Delaney Nystrom
 to pull publicly available data from the <a
@@ -363,23 +335,16 @@ classification models. Below is a graph showing predicted probability of
 male (versus female) death due to COVID-19 in four high-income countries
 (Australia, Spain, Sweden, Switzerland) and three low-income countries
 (Kenya, Nigeria, Zimbabwe). <br /> <img src="RMP.png"
-style="width:45.0%" /></li>
-</ol>
-</div>
-<div id="classification-using-machine-learning-algorithms"
-class="section level3">
-<h3>Classification using Machine Learning algorithms</h3>
-<ol style="list-style-type: decimal">
-<li><font size="4"> <strong>How well do different ML algorithms predict
-precipitation in Seattle, WA (my hometown)?</strong> <br /> This was a
-for-fun side project, where I used logistic regression, Naïve Bayes, and
-<em>k</em>-Nearest neighbors to predict precipitation in Seattle. Please
-click <a href="ProjectB.html" target="_blank">here</a> for full write-up
-and R code. Plot below shows the predictive accuracy of my
-<em>k</em>-Nearest neighbors model by specified K-value. <br /> <img
-src="kneighbors.png" style="width:40.0%" /></li>
-</ol>
-</div>
+style="width:45.0%" /></p>
+<p><font size="4"> <strong>How well do different Machine Learning
+algorithms predict precipitation in Seattle?</strong> <br />
+<font size="3"> This was a for-fun side project, where I used logistic
+regression, Naïve Bayes, and <em>k</em>-Nearest neighbors to predict
+precipitation in Seattle. Please click <a href="ProjectB.html"
+target="_blank">here</a> for full write-up and R code. Plot below shows
+the predictive accuracy of my <em>k</em>-Nearest neighbors model by
+specified K-value. <br /> <img src="kneighbors.png"
+style="width:40.0%" /></p>
 
 
 

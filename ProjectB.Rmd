@@ -137,6 +137,24 @@ ggplot(knn.df, aes(x = Kvalue, y = Value))+
   xlab("K-value")
 ```
 
+#### Cross-Validation
+1. k-Fold cross-validation
+2. Leave-one-out cross validation
+3. Random cross-validation
+
+#### Bootstrap Sampling
+1. 
+
+### Beyond predictive accuracy
+1. Kappa
+2. Precision and recall
+3. Sensitivity and specificity 
+
+###  Visualizing how the model performs
+1. Receiver Operating Characteristic Curve (ROC)
+2. Under the area curve (AUC)
+3. 
+
 ### Conclusion
 By comparing logistic regression, Naïve Bayes, and *k*-Nearest Neighbors, it's clear that *k*-Nearest Neighbors provides the best predictions on whether or not it will precipitate in Seattle on any given day in December. This is likely influenced by the relatively small sample size and low dimensionality of this particular dataset, which allows for fast computation using this lazy-learning method.  
 
