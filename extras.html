@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>extra Statistics/ML</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">About Me</a>
+</li>
+<li>
+  <a href="Studies.html">Studies</a>
+</li>
+<li>
+  <a href="Statistics.html">Statistics/ML</a>
+</li>
+<li>
+  <a href="Bioanalytics.html">Bioanalytics</a>
+</li>
+<li>
+  <a href="Publications.html">Publications</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">extra Statistics/ML</h1>
+
+</div>
+
+
+<div id="hierarchical-linear-regression" class="section level3">
+<h3>Hierarchical linear regression</h3>
+<ol style="list-style-type: decimal">
+<li><p><font size="4"> <strong>Does breastfeeding behavior correspond to
+differences in perceived physical and mental wellbeing among postpartum
+women?</strong> <br /> <font size="3"> Using survey data I collected for
+the <a href="Studies.html" target="_blank">Seattle Postpartum Health
+Study</a>, I employed linear Bayesian regression models to estimate the
+association between infant feeding behavior (at-the-nipple
+breastfeeding, use of expressed/pumped breastmilk) and reported mental
+(EPDS score) and physical (PHQ) health. To parse out potential effects
+of time since delivery, I also ran separate models using early versus
+late postpartum as an interaction term (&lt;70 DSD = less than 70 days
+since delivery, &gt;70 DSD = more than days since delivery). Plot A
+shows that ATN breastfeeding is reliably associated with fewer symptoms
+of depression, while effects of pumping vary by time since delivery.
+Plot B shows that pumping is associated with more symptoms of physical
+illness, regardless of time since delivery.
+<font size="3"><em>Manuscript in prep.</em> <br /> <img
+src="EPDS_PHQ.png" style="width:60.0%" /></p></li>
+<li><p><font size="4"> <strong>Do peripheral markers of fetal tolerance
+vary across populations experiencing different environmental
+conditions?</strong> <br /> <font size="3"> For this paper, I utilized
+fully Bayesian hierarchical regression models to estimate and comparing
+the effects of trimester of pregnancy on immune status among Tsimane and
+USA women. Figure below shows the predicted percentage of each leukocyte
+subset among cycling (C) and first (T1), second (T2), and third (T3)
+trimester Tsimane and USA women. <font size="3"> <em>Results published
+in <a href="https://academic.oup.com/emph/article/2020/1/114/5866980"
+target="_blank">here</a></em>. <br /> <br /> <img src="Figure2.jpg"
+style="width:55.0%" /></p></li>
+</ol>
+</div>
+<div id="hierarchical-nonlinear-regression" class="section level3">
+<h3>Hierarchical nonlinear regression</h3>
+<p><font size="4"></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Do postpartum women exhibit unique immune profiles? If
+so, how does maternal immune status in the postpartum period compare to
+markers of immune function during pregnancy?</strong> <br /> For this
+project, I combined immunological data from regularly cycling, pregnant,
+and postpartum <a href="https://en.wikipedia.org/wiki/Tsiman%C3%A9"
+target="_blank">Tsimane</a> and USA women and modelled the effects of
+month of pregnancy and month since delivery on leukocyte differential,
+C-reactive protein concentration, and neutrophil-to-lymphocyte ratio.
+Below is a graph showing estimated median white blood cell count (and
+95% credible intervals) by month of pregnancy and month since delivery
+among Tsimane and USA women. Banded lines indicate population-specific
+cycling baseline values. <font size="3"><em>Manuscript in prep.</em>
+<br /> <img src="Rplot.jpeg" style="width:50.0%" /></p></li>
+<li><p><font size="4"> <strong>Does the degree of sexual dimorphism in
+immune function vary across populations as a function of divergent
+ecological conditions (e.g., pathogen burden, reduced energetic
+reserves)?</strong> <br /> For this paper, I utilized data from the <a
+href="https://tsimane.anth.ucsb.edu/" target="_blank">Tsimane Health and
+Life History Project</a> and <a
+href="https://www.cdc.gov/nchs/nhanes/index.htm"
+target="_blank">NHANES</a> and Bayesian nonlinear hierarchical
+regression models to estimate the population-specific effects of age on
+immune function, stratified by sex and female reproductive phase. Below
+is a graph showing estimated median natural-logged white blood cell
+count (and 95% credible intervals) by age, sex, and female reproductive
+phase among individuals in the USA. <font size="3"> <em>Manuscript in
+prep.</em> <br /></p></li>
+</ol>
+<p><img src="SexDif.png" style="width:50.0%" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li><font size="4"> <strong>How do predicted values vary between models
+specified using brms versus mgcv?</strong> <br /> This was a fun side
+project, where I modeled the non-linear sex-specific effects of age on
+estradiol and testosterone levels using <a
+href="https://cran.r-project.org/web/packages/brms/index.html"
+target="_blank">brms</a> and <a
+href="https://cran.r-project.org/web/packages/mgcv/index.html"
+target="_blank">mgcv</a> packages and compared the predicted values.
+Below is a plot showing the mgcv predicted median values and 95%
+credible intervals for estradiol and testosterone among males and
+females by age. Click <a href="ProjectA.html" target="_blank">here</a>
+for the corresponding write-up and R code. <br /> <img src="plotpa.png"
+style="width:55.0%" /></li>
+</ol>
+</div>
+<div id="modelling-probability" class="section level3">
+<h3>Modelling probability</h3>
+<ol style="list-style-type: decimal">
+<li><font size="4"> <strong>Does sex bias in COVID-19 mortality differ
+between high-income and low-income countries?</strong> <br /> During
+summer 2021, I worked with my <a
+href="https://summer.ucsb.edu/programs/research-mentorship-program/overview"
+target="_blank">Research Mentorship Program</a> student Delaney Nystrom
+to pull publicly available data from the <a
+href="https://globalhealth5050.org/the-sex-gender-and-covid-19-project/"
+target="_blank">Sex, Gender and COVID-19 project</a> to determine if/how
+sex bias in COVID-19 mortality varied by country using binomial
+classification models. Below is a graph showing predicted probability of
+male (versus female) death due to COVID-19 in four high-income countries
+(Australia, Spain, Sweden, Switzerland) and three low-income countries
+(Kenya, Nigeria, Zimbabwe). <br /> <img src="RMP.png"
+style="width:45.0%" /></li>
+</ol>
+</div>
+<div id="classification-with-ml" class="section level3">
+<h3>Classification with ML</h3>
+<ol style="list-style-type: decimal">
+<li><font size="4"> <strong>How well do different ML algorithms predict
+precipitation in Seattle?</strong> <br /> This was a for-fun side
+project, where I used logistic regression, Naïve Bayes, and
+<em>k</em>-Nearest neighbors to predict precipitation in Seattle. Please
+click <a href="ProjectB.html" target="_blank">here</a> for full write-up
+and R code. Plot below shows the predictive accuracy of my
+<em>k</em>-Nearest neighbors model by specified K-value. <br /> <img
+src="kneighbors.png" style="width:40.0%" /></li>
+</ol>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
