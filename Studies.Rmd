@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <img align="right" width="350" hspace = "20" src=clipart_FB.jpg>
 
-<font size="4"> As co-principal investigator of the [Seattle Postpartum Health Study](https://momshealth.anth.ucsb.edu/){target="_blank"}, I was directly responsible for every aspect of the project, including the following: <br /> <font size="3">
+<font size="4"> As co-principal investigator of the [Seattle Postpartum Health Study](Survey.html){target="_blank"}, I was directly responsible for every aspect of the project, including the following: <br /> <font size="3">
 
 1. Study design (surveys / questionnaires, etc.) <br />
 2. Grant writing (funded by [NSF](https://www.nsf.gov/pubs/2005/nsf05607/nsf05607.htm){target="_blank"} and [Wenner-Gren Foundation](http://www.wennergren.org/programs/dissertation-fieldwork-grants){target="_blank"}) <br />
