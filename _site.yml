@@ -4,7 +4,7 @@ navbar:
   left:
     - text: "About Me" #Page 1
       href: index.html
-    - text: "Studies/Projects" #Page 1
+    - text: "Projects" #Page 1
       href: Studies.html
     - text: "Study Design" #Page 4
       href: Survey.html
